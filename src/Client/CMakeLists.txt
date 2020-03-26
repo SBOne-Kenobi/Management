@@ -5,7 +5,11 @@ set(CMAKE_CXX_STANDARD 17)
 
 include_directories(../../include)
 
-set(COMMON_SOURCES ../common/Management.cpp)
+set(COMMON_SOURCES ../common/Management.cpp ../../include/Management.h
+        ../common/Bank.cpp ../../include/Bank.h
+        )
+
+
 set(CLIENT_SOURCES main.cpp)
 
 add_executable(client ${COMMON_SOURCES} ${CLIENT_SOURCES})
