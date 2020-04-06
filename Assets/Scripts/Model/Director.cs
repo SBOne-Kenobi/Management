@@ -1,4 +1,7 @@
-﻿class Director
+﻿namespace Management
 {
+    public class Director
+    {
 
+    }
 }

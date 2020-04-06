@@ -1,4 +1,7 @@
-﻿public class Management
+﻿namespace Management
 {
-    
+    public class Management
+    {
+        
+    }
 }
