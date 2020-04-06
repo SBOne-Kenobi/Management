@@ -1,2 +1,3 @@
-# Учебный проект: деловая игра "Менеджмент".
-Ссылка на источник: https://drive.google.com/file/d/1ue_I-Egbu_xSdMr9cJ0s-HyuAKmvzXrL/view (6 глава).
+# "Management" : gamified business simulation
+Under **Team R ( Elizaveta Artser and Rustam Sadykov )** development \
+Academic practice 2020, MP, MCS Department, SPbSU
