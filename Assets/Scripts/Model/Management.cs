@@ -33,7 +33,7 @@ namespace Management
         {
             _directors = directors;
             _cur_month = 1;
-            _state = 2;
+            _state = 1;
             _order = 0;
             _alive = directors.Count;
             _bank = new Bank(_alive);
