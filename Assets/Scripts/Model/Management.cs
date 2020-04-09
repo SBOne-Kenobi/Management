@@ -23,8 +23,8 @@ namespace Management
         private int _num_states;
         public int NumberOfStates => _num_states;
 
-        public List<Demand> _requests_of_mat;
-        public List<Offer> _requests_of_prod;
+        public List<Demand> _requests_of_mat = new List<Demand>();
+        public List<Offer> _requests_of_prod = new List<Offer>();
 
         private int _cur_month;
         public int Month => _cur_month;

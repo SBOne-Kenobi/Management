@@ -5,7 +5,7 @@ using Management;
 
 public class Player : MonoBehaviour
 {
-    public Director director;
+    public Director director = new Director();
     public bool IsReady = true;
 
     public void GetReady()
@@ -21,7 +21,6 @@ public class Player : MonoBehaviour
     public IEnumerator WaitForReady()
     {
         IsReady = false;
-        //init getting ready
         while (!IsReady)
         {
             //ждем изменения состояния ready 

@@ -18,12 +18,14 @@ public class Controller : MonoBehaviour
             directors.Add(player.director);
         game = new Management.Management(directors);
         IsReadyToGoNext = false;
-        WaitForAllReady(GoNext);
+        StartCoroutine(WaitForAllReady(GoNext));
+        Debug.Log("Start Game");
     }
 
     public void GoNext()
     {
         IsReadyToGoNext = true;
+        Debug.Log("Game ready to continue");
     }
 
     public IEnumerator WaitForAllReady(Action action)
@@ -31,6 +33,7 @@ public class Controller : MonoBehaviour
         foreach (Player player in players)
             StartCoroutine(player.WaitForReady());
 
+        Debug.Log("Start players wait");
         bool isReady = false;
         while (!isReady)
         {
@@ -39,6 +42,7 @@ public class Controller : MonoBehaviour
             if (!isReady)
                 yield return null;
         }
+        Debug.Log("All players ready");
         action();
     }
 
@@ -57,15 +61,15 @@ public class Controller : MonoBehaviour
             } else if (game.State == 1)
             {
                 //update DemandOffer
-                WaitForAllReady(GoNext);
+                StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 2)
             {
                 //sum up results of requests of mat.
-                WaitForAllReady(GoNext);
+                StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 3)
             {
                 //sum up results of building fabrics.
-                WaitForAllReady(GoNext);
+                StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 4)
             {
                 //sum up results of requests of prod.
