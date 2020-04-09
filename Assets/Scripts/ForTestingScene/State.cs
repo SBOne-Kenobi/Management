@@ -17,8 +17,8 @@ public class State : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Text>().text = "State: " + controller.game.State.ToString();
-        if (!controller.IsReadyToGoNext)
+        GetComponent<Text>().text = "State: " + controller.game.ToString();
+        if (!controller.AllPlayersReady)
             GetComponent<Text>().text = GetComponent<Text>().text + "\n Wait Players";
     }
 }

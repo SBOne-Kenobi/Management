@@ -10,6 +10,7 @@ public class Controller : MonoBehaviour
     public Management.Management game = null;
     public List<Player> players = new List<Player>();
     public bool IsReadyToGoNext = false;
+    public bool AllPlayersReady = false;
 
     public void InitGame()
     {
@@ -25,11 +26,13 @@ public class Controller : MonoBehaviour
     public void GoNext()
     {
         IsReadyToGoNext = true;
+        game.NextState();
         Debug.Log("Game ready to continue");
     }
 
     public IEnumerator WaitForAllReady(Action action)
     {
+        AllPlayersReady = false;
         foreach (Player player in players)
             StartCoroutine(player.WaitForReady());
 
@@ -43,6 +46,14 @@ public class Controller : MonoBehaviour
                 yield return null;
         }
         Debug.Log("All players ready");
+        AllPlayersReady = true;
+        action();
+    }
+
+    public IEnumerator WaitForFewSecs(Action action)
+    {
+        Debug.Log("Waiting 1 sec.");
+        yield return new WaitForSeconds(1f);
         action();
     }
 
@@ -50,14 +61,13 @@ public class Controller : MonoBehaviour
     {
         if (game == null)
             return;
-        if (IsReadyToGoNext)
+        if (IsReadyToGoNext && AllPlayersReady)
         {
-            game.NextState();
             IsReadyToGoNext = false;
             if (game.State == 0)
             {
                 //changed fabrics, became bankrupts...
-                IsReadyToGoNext = true;
+                StartCoroutine(WaitForFewSecs(GoNext));
             } else if (game.State == 1)
             {
                 //update DemandOffer
@@ -68,12 +78,12 @@ public class Controller : MonoBehaviour
                 StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 3)
             {
-                //sum up results of building fabrics.
+                //sum up results of production.
                 StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 4)
             {
                 //sum up results of requests of prod.
-                IsReadyToGoNext = true;
+                StartCoroutine(WaitForFewSecs(GoNext));
             }
         }
     }

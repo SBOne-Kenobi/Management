@@ -6,11 +6,13 @@ using Management;
 public class Player : MonoBehaviour
 {
     public Director director = new Director();
-    public bool IsReady = true;
+    public bool IsReady = false;
+    public bool Mutable = false;
 
     public void GetReady()
     {
-        IsReady = true;
+        if (Mutable)
+            IsReady = true;
     }
 
     public void Update()
@@ -20,11 +22,13 @@ public class Player : MonoBehaviour
 
     public IEnumerator WaitForReady()
     {
+        Mutable = true;
         IsReady = false;
         while (!IsReady)
         {
             //ждем изменения состояния ready 
             yield return null;
         }
+        Mutable = false;
     }
 }
