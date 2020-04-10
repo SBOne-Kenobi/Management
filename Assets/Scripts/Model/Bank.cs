@@ -103,8 +103,8 @@ namespace Management
         private int _materials;
         private int _product;
 
-        private DemandOffer[] _report;
-        public DemandOffer[] Report => _report;
+        private List<DemandOffer> _report = new List<DemandOffer>();
+        public List<DemandOffer> Report => _report;
 
         public Bank(int N)
         {
@@ -116,7 +116,7 @@ namespace Management
         public void SetNewPriceLevel(int N)
         {
             float Rem = 1.0f;
-            for (int i = 0; i < ProbOfPriceChange.GetLength(_priceLevel); i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (UnityEngine.Random.Range(0.0f, Rem) <= ProbOfPriceChange[_priceLevel, i])
                 {

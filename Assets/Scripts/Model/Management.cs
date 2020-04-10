@@ -7,48 +7,64 @@ namespace Management
 {
     public class Management
     {
-        private Bank _bank;
-        public Bank Bank => _bank;
 
-        private int _order;
-        public int DirectorsOrder => _order;
+        public override string ToString()
+        {
+            if (State == 4)
+                return "Getting fix costs";
+            else if (State == 0)
+                return "Explore market";
+            else if (State == 1)
+                return "Material requests";
+            else if (State == 2)
+                return "Production of goods";
+            else if (State == 3)
+                return "Product requests";
+            else if (State == -1)
+                return "Start game";
+            return "Undefined state go method Management::ToString()";
+        }
+        public Bank Bank { get; }
+        public int DirectorsOrder { get; private set; }
 
         public List<Director> _directors { get; }
 
-        private int _alive;
+        public int Alive { get; private set; }
 
-        private int _state;
-        public int State => _state;
+        public int State { get; private set; }
+        public int NumberOfStates { get; }
 
-        private int _num_states;
-        public int NumberOfStates => _num_states;
-
-        public List<Demand> _requests_of_mat;
-        public List<Offer> _requests_of_prod;
-
-        private int _cur_month;
-        public int Month => _cur_month;
+        public List<Demand> _requests_of_mat = new List<Demand>();
+        public List<Offer> _requests_of_prod = new List<Offer>();
+        public int Month { get; private set; }
 
         public Management(List<Director> directors)
         {
             _directors = directors;
-            _cur_month = 1;
-            _state = 2;
-            _order = 0;
-            _alive = directors.Count;
-            _bank = new Bank(_alive);
-            _num_states = 5;
+            Month = 1;
+            State = -1;
+            DirectorsOrder = 0;
+            Alive = directors.Count;
+            Bank = new Bank(Alive);
+            NumberOfStates = 5;
         }
 
         public void NextState()
         {
-            _state = (_state + 1) % _num_states;
-            if (_state == 0)
-            { 
-                _order = (_order + 1) % _directors.Count;
+            if (State == -1)
+            {
+                //start game
+                State = 1;
+                return;
+            }
+            State = (State + 1) % NumberOfStates;
+            if (State == 0)
+            {
+                Month++;
+                DirectorsOrder = (DirectorsOrder + 1) % _directors.Count;
                 foreach (Director d in _directors)
                     if (d.GetFixedCosts())
-                        _alive++;
+                        Alive++;
                 //dangerous code
                 foreach (Fabric f in Fabric.Fabrics.ToList())
                 {
@@ -60,22 +76,22 @@ namespace Management
                         Fabric.Fabrics.Remove(f); //and this danger (remove form list)
                 }
                 // sum up results
-            } else if (_state == 1)
-                _bank.SetNewPriceLevel(_alive);
-            else if (_state == 2)
+            } else if (State == 1)
+                Bank.SetNewPriceLevel(Alive);
+            else if (State == 2)
             {
                 // wait requests of materials
-                _requests_of_mat = _bank.RequestOfMat(_requests_of_mat);
+                _requests_of_mat = Bank.RequestOfMat(_requests_of_mat);
                 // sum up results
-            } else if (_state == 3)
+            } else if (State == 3)
             {
                 // wait for ready
                 foreach (Fabric f in Fabric.Fabrics)
                     f.DoProcessing();
-            } else if (_state == 4)
+            } else if (State == 4)
             {
                 // wait requests of prod
-                _requests_of_prod = _bank.RequestOfProd(_requests_of_prod);
+                _requests_of_prod = Bank.RequestOfProd(_requests_of_prod);
                 // sum upp results
             }
         }
