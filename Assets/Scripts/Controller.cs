@@ -34,7 +34,10 @@ public class Controller : MonoBehaviour
     {
         AllPlayersReady = false;
         foreach (Player player in players)
-            StartCoroutine(player.WaitForReady());
+        {
+            if (!player.director.IsBankrupt)
+                StartCoroutine(player.WaitForReady());
+        }
 
         Debug.Log("Start players wait");
         bool isReady = false;

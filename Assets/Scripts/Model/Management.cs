@@ -29,7 +29,8 @@ namespace Management
 
         public List<Director> _directors { get; }
 
-        private int _alive;
+        public int Alive { get; private set; }
+
         public int State { get; private set; }
         public int NumberOfStates { get; }
 
@@ -43,8 +44,8 @@ namespace Management
             Month = 1;
             State = -1;
             DirectorsOrder = 0;
-            _alive = directors.Count;
-            Bank = new Bank(_alive);
+            Alive = directors.Count;
+            Bank = new Bank(Alive);
             NumberOfStates = 5;
         }
 
@@ -63,7 +64,7 @@ namespace Management
                 DirectorsOrder = (DirectorsOrder + 1) % _directors.Count;
                 foreach (Director d in _directors)
                     if (d.GetFixedCosts())
-                        _alive++;
+                        Alive++;
                 //dangerous code
                 foreach (Fabric f in Fabric.Fabrics.ToList())
                 {
@@ -76,7 +77,7 @@ namespace Management
                 }
                 // sum up results
             } else if (State == 1)
-                Bank.SetNewPriceLevel(_alive);
+                Bank.SetNewPriceLevel(Alive);
             else if (State == 2)
             {
                 // wait requests of materials
