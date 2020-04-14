@@ -8,9 +8,33 @@ public class Controller : MonoBehaviour
 {
 
     public Management.Management game = null;
-    public List<Player> players = new List<Player>();
-    public bool IsReadyToGoNext = false;
-    public bool AllPlayersReady = false;
+    public List<Player> players { get; private set; } = new List<Player>();
+    public bool IsReadyToGoNext { get; private set; } = false;
+    public bool AllPlayersReady { get; private set; } = false;
+
+    public void AddPlayer(Player player)
+    {
+        if (players.Contains(player))
+            return;
+        player.Order = players.Count;
+        players.Add(player);
+    }
+
+    public int GetPriority(Player player)
+    {
+        int res = (player.Order - game.DirectorsOrder + players.Count) % players.Count;
+        return res;
+    }
+
+    public void AddRequestOfMat(int price, int mat, Player player)
+    {
+        game._requests_of_mat.Add(new Demand(price, mat, GetPriority(player)));
+    }
+
+    public void AddRequestOfProd(int price, int prod, Player player)
+    {
+        game._requests_of_prod.Add(new Offer(price, prod, GetPriority(player)));
+    }
 
     public void InitGame()
     {
@@ -53,11 +77,16 @@ public class Controller : MonoBehaviour
         action();
     }
 
-    public IEnumerator WaitForFewSecs(Action action)
+    public IEnumerator WaitForTime(Action action, float time)
     {
-        Debug.Log("Waiting 1 sec.");
-        yield return new WaitForSeconds(1f);
+        Debug.Log("Waiting time");
+        yield return new WaitForSeconds(time);
         action();
+    }
+
+    public void EndGame()
+    {
+        game = null;
     }
 
     public void Update()
@@ -70,7 +99,12 @@ public class Controller : MonoBehaviour
             if (game.State == 0)
             {
                 //changed fabrics, became bankrupts...
-                StartCoroutine(WaitForFewSecs(GoNext));
+                if (game.Alive <= 1)
+                {
+                    EndGame();
+                    return;
+                }
+                StartCoroutine(WaitForTime(GoNext, 1f));
             } else if (game.State == 1)
             {
                 //update DemandOffer
@@ -78,6 +112,7 @@ public class Controller : MonoBehaviour
             } else if (game.State == 2)
             {
                 //sum up results of requests of mat.
+                game._requests_of_mat.Clear();
                 StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 3)
             {
@@ -86,7 +121,8 @@ public class Controller : MonoBehaviour
             } else if (game.State == 4)
             {
                 //sum up results of requests of prod.
-                StartCoroutine(WaitForFewSecs(GoNext));
+                game._requests_of_prod.Clear();
+                StartCoroutine(WaitForTime(GoNext, 1f));
             }
         }
     }

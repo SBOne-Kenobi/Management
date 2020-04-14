@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Management;
 
 public class Player : MonoBehaviour
 {
     public Director director = new Director();
+    public int Order = 0;
     public bool IsReady = false;
     public bool Mutable = false;
 
