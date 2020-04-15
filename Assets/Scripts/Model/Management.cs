@@ -17,7 +17,7 @@ namespace Management
             else if (State == 1)
                 return "Material requests";
             else if (State == 2)
-                return "Production of goods";
+                return "Production";
             else if (State == 3)
                 return "Product requests";
             else if (State == -1)
