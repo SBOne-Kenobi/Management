@@ -84,6 +84,11 @@ public class Controller : MonoBehaviour
         action();
     }
 
+    public void Start()
+    {
+        InitGame();
+    }
+
     public void EndGame()
     {
         game = null;

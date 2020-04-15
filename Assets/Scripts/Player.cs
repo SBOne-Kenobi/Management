@@ -1,18 +1,34 @@
 ﻿using System.Collections;
 using UnityEngine;
 using Management;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    public Director director = new Director();
+    private Controller controller;
+    public Director director { get; private set; } = new Director();
     public int Order = 0;
-    public bool IsReady = false;
-    public bool Mutable = false;
+    public bool IsReady { get; private set; } = false;
+    public bool Mutable { get; private set; } = false;
+    public string Name = "Default";
 
     public void GetReady()
     {
         if (Mutable)
             IsReady = true;
+    }
+
+    public void Awake()
+    {
+        controller = FindObjectOfType<Controller>();
+        Debug.Log(controller);
+        Debug.Log(Name);
+        controller.AddPlayer(this);
+    }
+
+    public void Start()
+    {
+        transform.Find("Name").GetComponent<Text>().text = Name;
     }
 
     public void Update()
