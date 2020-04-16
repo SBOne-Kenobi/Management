@@ -74,6 +74,7 @@ public class Controller : MonoBehaviour
         }
         Debug.Log("All players ready");
         AllPlayersReady = true;
+        yield return null;
         action();
     }
 
