@@ -44,14 +44,12 @@ public class Controller : MonoBehaviour
         game = new Management.Management(directors);
         IsReadyToGoNext = false;
         StartCoroutine(WaitForAllReady(GoNext));
-        Debug.Log("Start Game");
     }
 
     public void GoNext()
     {
         IsReadyToGoNext = true;
         game.NextState();
-        Debug.Log("Game ready to continue");
     }
 
     public IEnumerator WaitForAllReady(Action action)
@@ -62,8 +60,7 @@ public class Controller : MonoBehaviour
             if (!player.director.IsBankrupt)
                 StartCoroutine(player.WaitForReady());
         }
-
-        Debug.Log("Start players wait");
+        
         bool isReady = false;
         while (!isReady)
         {
@@ -72,14 +69,13 @@ public class Controller : MonoBehaviour
             if (!isReady)
                 yield return null;
         }
-        Debug.Log("All players ready");
         AllPlayersReady = true;
+        yield return null;
         action();
     }
 
     public IEnumerator WaitForTime(Action action, float time)
     {
-        Debug.Log("Waiting time");
         yield return new WaitForSeconds(time);
         action();
     }
@@ -109,7 +105,7 @@ public class Controller : MonoBehaviour
                     EndGame();
                     return;
                 }
-                StartCoroutine(WaitForTime(GoNext, 1f));
+                StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 1)
             {
                 //update DemandOffer
@@ -117,6 +113,7 @@ public class Controller : MonoBehaviour
             } else if (game.State == 2)
             {
                 //sum up results of requests of mat.
+                
                 game._requests_of_mat.Clear();
                 StartCoroutine(WaitForAllReady(GoNext));
             } else if (game.State == 3)

@@ -21,8 +21,6 @@ public class Player : MonoBehaviour
     public void Awake()
     {
         controller = FindObjectOfType<Controller>();
-        Debug.Log(controller);
-        Debug.Log(Name);
         controller.AddPlayer(this);
     }
 
