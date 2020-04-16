@@ -38,6 +38,18 @@ namespace Management
                 _fabrics[i] = null;
         }
 
+        public void MakeRequestOfMat(int price, int get)
+        {
+            _money -= price * get;
+            _mat += get;
+        }
+
+        public void MakeRequestOfProd(int price, int sold)
+        {
+            _money += price * sold;
+            _prod -= sold;
+        }
+
         public bool GetFixedCosts()
         {
             //magic constates (:

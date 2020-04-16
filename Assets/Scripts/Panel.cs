@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Panel : MonoBehaviour
 {
@@ -27,8 +28,8 @@ public class Panel : MonoBehaviour
     private void Update()
     {
         State.GetComponent<Text>().text = "Current state: " + controller.game.ToString();
-        Mat.GetComponent<Text>().text = "M: " + controller.game.Bank.GetInfo.UMat.ToString();
-        Prod.GetComponent<Text>().text = "P: " + controller.game.Bank.GetInfo.UProd.ToString();
+        Mat.GetComponent<Text>().text = "M: " + (Math.Floor(controller.game.Bank.GetInfo.UMat * controller.game.Alive)).ToString();
+        Prod.GetComponent<Text>().text = "P: " + (Math.Floor(controller.game.Bank.GetInfo.UProd * controller.game.Alive)).ToString();
         MinMat.GetComponent<Text>().text = "≥$: " + controller.game.Bank.GetInfo.MinPrice.ToString();
         MaxProd.GetComponent<Text>().text = "≤$: " + controller.game.Bank.GetInfo.MaxPrice.ToString();
         Month.GetComponent<Text>().text = "Month: " + controller.game.Month.ToString();

@@ -83,6 +83,10 @@ namespace Management
                 // wait requests of materials
                 _requests_of_mat = Bank.RequestOfMat(_requests_of_mat);
                 // sum up results
+                foreach (Demand demand in _requests_of_mat)
+                {
+                    _directors[(demand.Priority + DirectorsOrder) % _directors.Count].MakeRequestOfMat(demand.Price, demand.UMat);
+                }
             } else if (State == 3)
             {
                 // wait for ready
@@ -92,7 +96,11 @@ namespace Management
             {
                 // wait requests of prod
                 _requests_of_prod = Bank.RequestOfProd(_requests_of_prod);
-                // sum upp results
+                // sum up results
+                foreach (Offer demand in _requests_of_prod)
+                {
+                    _directors[(demand.Priority + DirectorsOrder) % _directors.Count].MakeRequestOfProd(demand.Price, demand.UProd);
+                }
             }
         }
     }

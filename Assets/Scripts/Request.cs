@@ -16,9 +16,45 @@ public class Request : MonoBehaviour
     {
         controller = FindObjectOfType<Controller>();
     }
+
     void Start()
     {
         input.SetActive(false);
+        button.SetActive(true);
+    }
+
+    public void FixPrice()
+    {
+        Transform amount = input.transform.Find("InputAmount");
+        Transform price = input.transform.Find("InputPrice");
+        int pr, am;
+        if (price.GetComponent<InputField>().text.Length > 0 && price.GetComponent<InputField>().text[0] == '-')
+        {
+            pr = 0;
+        }
+        else
+        {
+            pr = Convert.ToInt32("0" + price.GetComponent<InputField>().text);
+        }
+        if (amount.GetComponent<InputField>().text.Length > 0 && amount.GetComponent<InputField>().text[0] == '-')
+        {
+            am = 0;
+        }
+        else
+        {
+            am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
+        }
+
+        if (controller.game.State == 3)
+        {
+            am = Math.Min(am, switcher.GetPlayer().director.Product);
+        }
+        else if (controller.game.State == 1)
+        {
+            pr = Math.Min(pr, switcher.GetPlayer().director.Money / Math.Max(am, 1));
+        }
+        price.GetComponent<InputField>().text = pr.ToString();
+        amount.GetComponent<InputField>().text = am.ToString();
     }
 
     void Update()
@@ -30,9 +66,10 @@ public class Request : MonoBehaviour
         }
         else
         {
-            if (controller.game.State == 1 || controller.game.State == 3)
+            if (input.activeSelf)
             {
-                MakeRequest();
+                input.transform.Find("InputAmount").GetComponent<InputField>().text = "";
+                input.transform.Find("InputPrice").GetComponent<InputField>().text = "";
             }
             input.SetActive(false);
             button.SetActive(true);
@@ -41,17 +78,21 @@ public class Request : MonoBehaviour
 
     public void MakeRequest()
     {
-        Transform amount = input.transform.Find("InputAmount");
-        Transform price = input.transform.Find("InputPrice");
-        if (controller.game.State == 1)
+        if (controller.game.State == 1 || controller.game.State == 3)
         {
-            controller.AddRequestOfMat(Convert.ToInt32(price.GetComponent<InputField>().text),
-                Convert.ToInt32(amount.GetComponent<InputField>().text), switcher.GetPlayer());
-        }
-        else
-        {
-            controller.AddRequestOfProd(Convert.ToInt32(price.GetComponent<InputField>().text),
-                Convert.ToInt32(amount.GetComponent<InputField>().text), switcher.GetPlayer());
+            Transform amount = input.transform.Find("InputAmount");
+            Transform price = input.transform.Find("InputPrice");
+            int pr = Convert.ToInt32("0" + price.GetComponent<InputField>().text);
+            int am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
+            Debug.Log(switcher.GetPlayer().Name + ": " + pr.ToString() + " " + am.ToString());
+            if (controller.game.State == 1)
+            {
+                controller.AddRequestOfMat(pr, am, switcher.GetPlayer());
+            }
+            else
+            {
+                controller.AddRequestOfProd(pr, am, switcher.GetPlayer());
+            }
         }
     }
 }
