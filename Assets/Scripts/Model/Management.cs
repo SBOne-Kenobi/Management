@@ -15,8 +15,7 @@ namespace Management
 
         public WorldState State { get; }
 
-        public List<Demand> _requests_of_mat = new List<Demand>();
-        public List<Offer> _requests_of_prod = new List<Offer>();
+        public int Alive => State.Directors.Count;
 
         public Management(List<Director> directors)
         {

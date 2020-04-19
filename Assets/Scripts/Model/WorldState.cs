@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System;
 using Management;
+using System.Linq;
 
 namespace Management
 { 
@@ -32,6 +33,9 @@ namespace Management
         public List<Director> Directors { get; private set; }
         public Bank Bank { get; private set; }
 
+        public List<Demand> RequestsOfMat { get; private set; }
+        public List<Offer> RequestsOfProd { get; private set; }
+
         public WorldState(List<Director> directors)
         {
             CurrentMonth = 0;
@@ -39,6 +43,8 @@ namespace Management
             CurrentMainDirector = 0;
             Directors = directors;
             Bank = new Bank(Directors.Count);
+            RequestsOfMat = new List<Demand>();
+            RequestsOfProd = new List<Offer>();
         }
 
         public string Description()
@@ -68,9 +74,100 @@ namespace Management
             }
         }
 
+        public int GetPriority(Director director)
+        {
+            for (int i = 0; i < Directors.Count; i++)
+                if (Directors[i] == director)
+                    return (i - CurrentMainDirector + Directors.Count) % Directors.Count;
+            return Directors.Count;
+        }
+
+        public Director GetDirector(int Priority)
+        {
+            return Directors[(Priority + CurrentMainDirector) % Directors.Count];
+        }
+
+        public void AddRequestOfMat(int price, int amount, Director director)
+        {
+            RequestsOfMat.Add(new Demand(price, amount, GetPriority(director)));
+        }
+
+        public void AddRequestOfProd(int price, int amount, Director director)
+        {
+            RequestsOfProd.Add(new Offer(price, amount, GetPriority(director)));
+        }
+
         public GameState GoNextState()
         {
-            
+            //end of state
+            if (CurrentState == GameState.FixCosts)
+            {
+                //nothing
+            }
+            else if (CurrentState == GameState.UpdateMarket)
+            {
+                //nothing
+            }
+            else if (CurrentState == GameState.MatRequest)
+            {
+                foreach (Demand demand in RequestsOfMat)
+                    GetDirector(demand.Priority).MakeRequestOfMat(demand.Price, demand.UMat);
+                RequestsOfMat.Clear();
+            }
+            else if (CurrentState == GameState.Production)
+            {
+                foreach (Fabric fabric in Fabrics)
+                    fabric.NextState(this);
+            }
+            else if (CurrentState == GameState.ProdRequest)
+            {
+                foreach (Offer offer in RequestsOfProd)
+                    GetDirector(offer.Priority).MakeRequestOfProd(offer.Price, offer.UProd);
+                RequestsOfProd.Clear();
+            }
+
+            CurrentState = GetNextState;
+
+            // start of new state
+            if (CurrentState == GameState.FixCosts)
+            {
+                CurrentMonth += 1;
+                Director currentMain = GetDirector(0);
+                foreach (Director director in Directors.ToList())
+                {
+                    director.NextState(this);
+                    if (director.IsBankrupt)
+                    {
+                        if (currentMain != null)
+                            CurrentMainDirector--;
+                        Directors.Remove(director);
+                    }
+                    if (currentMain == director)
+                        currentMain = null;
+                }
+                CurrentMainDirector = (CurrentMainDirector + 1) % Directors.Count;
+
+                foreach (Fabric fabric in Fabrics)
+                    fabric.NextState(this);
+            }
+            else if (CurrentState == GameState.UpdateMarket)
+            {
+                Bank.NextState(this);
+            }
+            else if (CurrentState == GameState.MatRequest)
+            {
+                //wait for requests
+            }
+            else if (CurrentState == GameState.Production)
+            {
+                //wait for production
+            }
+            else if (CurrentState == GameState.ProdRequest)
+            {
+                //wait for requests
+            }
+
+            return CurrentState;
         }
     }
 }

@@ -5,7 +5,7 @@ using System;
 
 namespace Management
 {
-    public struct Demand : IComparable<Demand>, IWorldObject
+    public struct Demand : IComparable<Demand>
     {
         public int Price { get; }
         public int UMat { get; }
@@ -30,11 +30,6 @@ namespace Management
                     return this.UMat.CompareTo(other.UMat);
 
             }
-        }
-
-        public void NextState(WorldState state)
-        {
-            throw new NotImplementedException();
         }
     }
 
@@ -82,7 +77,7 @@ namespace Management
         }
     }
 
-    public class Bank
+    public class Bank : IWorldObject
     {
         public static float[,] ProbOfPriceChange { get; } =
         {
@@ -164,6 +159,11 @@ namespace Management
                 res.Add(new Offer(o.Price, got, o.Priority));
             }
             return res;
+        }
+
+        public void NextState(WorldState state)
+        {
+            throw new NotImplementedException();
         }
     }
 }
