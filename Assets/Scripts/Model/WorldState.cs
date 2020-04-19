@@ -13,13 +13,14 @@ namespace Management
 
     public enum GameState
     {
+        Unknown = -3,
         Start = -1, 
         FixCosts = 0,
         UpdateMarket = 1,
         MatRequest = 2,
         Production = 3,
         ProdRequest = 4,
-        NumberOfStates = 5 
+        NumberOfGameStates = 5
     };
 
     public class WorldState
@@ -54,8 +55,22 @@ namespace Management
                 return "Product requests";
             else if (CurrentState == GameState.Start)
                 return "Start game";
-            return "Undefined state go method Management::ToString()";
+            return "Unknown GameState";
         }
 
+        public GameState GetNextState {
+            get {
+                if (CurrentState == GameState.Start)
+                    return GameState.MatRequest;
+                int x = (int) CurrentState;
+                x = (x + 1) % ((int)GameState.NumberOfGameStates);
+                return (GameState)x;
+            }
+        }
+
+        public GameState GoNextState()
+        {
+            
+        }
     }
 }
