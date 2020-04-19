@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Management;
 
 namespace Management
 {
-    public class Fabric
+    public class Fabric : IWorldObject
     {
         public static int StartBuildTime { get; }
 
@@ -60,6 +61,11 @@ namespace Management
         {
             if (_build_time >= 0)
                 _build_time--;
+        }
+
+        public void NextState(WorldState state)
+        {
+            throw new NotImplementedException();
         }
 
         ~Fabric()

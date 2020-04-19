@@ -10,47 +10,22 @@ namespace Management
 
         public override string ToString()
         {
-            if (State == 4)
-                return "Getting fix costs";
-            else if (State == 0)
-                return "Explore market";
-            else if (State == 1)
-                return "Material requests";
-            else if (State == 2)
-                return "Production";
-            else if (State == 3)
-                return "Product requests";
-            else if (State == -1)
-                return "Start game";
-            return "Undefined state go method Management::ToString()";
+            return State.Description();
         }
-        public Bank Bank { get; }
-        public int DirectorsOrder { get; private set; }
 
-        public List<Director> _directors { get; }
-
-        public int Alive { get; private set; }
-
-        public int State { get; private set; }
-        public int NumberOfStates { get; }
+        public WorldState State { get; private set; }
 
         public List<Demand> _requests_of_mat = new List<Demand>();
         public List<Offer> _requests_of_prod = new List<Offer>();
-        public int Month { get; private set; }
 
         public Management(List<Director> directors)
         {
-            _directors = directors;
-            Month = 1;
-            State = -1;
-            DirectorsOrder = 0;
-            Alive = directors.Count;
-            Bank = new Bank(Alive);
-            NumberOfStates = 5;
+            State = new WorldState(directors);
         }
 
         public void NextState()
         {
+            /*
             if (State == -1)
             {
                 //start game
@@ -102,6 +77,7 @@ namespace Management
                     _directors[(demand.Priority + DirectorsOrder) % _directors.Count].MakeRequestOfProd(demand.Price, demand.UProd);
                 }
             }
+            */
         }
     }
 }

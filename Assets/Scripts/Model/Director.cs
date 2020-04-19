@@ -3,7 +3,7 @@
 namespace Management
 {
 
-    public class Director
+    public class Director : IWorldObject
     {
         private int _mat;
         public int Materials => _mat;
@@ -69,6 +69,11 @@ namespace Management
             if (_money < 0)
                 _bankrupt = true;
             return !_bankrupt;
+        }
+
+        public void NextState(WorldState state)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

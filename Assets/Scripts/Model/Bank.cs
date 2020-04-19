@@ -5,7 +5,7 @@ using System;
 
 namespace Management
 {
-    public struct Demand : IComparable<Demand>
+    public struct Demand : IComparable<Demand>, IWorldObject
     {
         public int Price { get; }
         public int UMat { get; }
@@ -30,6 +30,11 @@ namespace Management
                     return this.UMat.CompareTo(other.UMat);
 
             }
+        }
+
+        public void NextState(WorldState state)
+        {
+            throw new NotImplementedException();
         }
     }
 
