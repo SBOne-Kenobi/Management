@@ -13,39 +13,36 @@ namespace Management
 
         private int _upgrade_time;
 
-        public SimpleFabric() : base(StartBuildTime)
+        public SimpleFabric(Director owner, int pos) : base(owner, pos, StartBuildTime)
         {
             _upgrade_time = -1;
         }
 
-        internal SimpleFabric(int build_time) : base(build_time)
+        internal SimpleFabric(Director owner, int pos, int build_time) : base(owner, pos, build_time)
         {
             _upgrade_time = -1;
         }
 
-        public bool StartUpgade()
+        public void StartUpgade()
         {
-            if (_upgrade_time == -1 && _build_time <= 0)
-            {
-                _upgrade_time = StartUpgradeTime;
-                return true;
-            }
-            return false;
+            _upgrade_time = StartUpgradeTime;
         }
 
         public AutoFabric Upgrade()
         {
-            if (_upgrade_time == 0)
-                return new AutoFabric(0);
-            else
-                return null;
+            return new AutoFabric(Owner, Pos, 0);
         }
 
         public override void DecreaseTiming()
         {
             base.DecreaseTiming();
-            if (_upgrade_time >= 0)
+            if (_upgrade_time > 0)
                 _upgrade_time--;
+            if (_upgrade_time == 0)
+            {
+                Remove();
+                Upgrade();
+            }
         }
     }
 }

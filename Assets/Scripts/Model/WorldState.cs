@@ -43,6 +43,8 @@ namespace Management
             CurrentMainDirector = 0;
             Directors = directors;
             Bank = new Bank(Directors.Count);
+            foreach (Director director in Directors)
+                director.Bank = Bank;
             RequestsOfMat = new List<Demand>();
             RequestsOfProd = new List<Offer>();
         }
@@ -110,17 +112,19 @@ namespace Management
             }
             else if (CurrentState == GameState.MatRequest)
             {
+                RequestsOfMat = Bank.RequestOfMat(RequestsOfMat);
                 foreach (Demand demand in RequestsOfMat)
                     GetDirector(demand.Priority).MakeRequestOfMat(demand.Price, demand.UMat);
                 RequestsOfMat.Clear();
             }
             else if (CurrentState == GameState.Production)
             {
-                foreach (Fabric fabric in Fabrics)
-                    fabric.NextState(this);
+                foreach (Director director in Directors)
+                    director.NextState(this);
             }
             else if (CurrentState == GameState.ProdRequest)
             {
+                RequestsOfProd = Bank.RequestOfProd(RequestsOfProd);
                 foreach (Offer offer in RequestsOfProd)
                     GetDirector(offer.Priority).MakeRequestOfProd(offer.Price, offer.UProd);
                 RequestsOfProd.Clear();
@@ -147,8 +151,11 @@ namespace Management
                 }
                 CurrentMainDirector = (CurrentMainDirector + 1) % Directors.Count;
 
-                foreach (Fabric fabric in Fabrics)
+                foreach (Fabric fabric in Fabrics.ToList())
                     fabric.NextState(this);
+
+                foreach (Director director in Directors)
+                    director.UpdateFabCosts();
             }
             else if (CurrentState == GameState.UpdateMarket)
             {

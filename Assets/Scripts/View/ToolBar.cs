@@ -25,9 +25,9 @@ public class ToolBar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Prod.GetComponent<Text>().text = switcher.GetPlayer().director.Product.ToString();
-        Mat.GetComponent<Text>().text = switcher.GetPlayer().director.Materials.ToString();
-        Mon.GetComponent<Text>().text = switcher.GetPlayer().director.Money.ToString();
+        Prod.GetComponent<Text>().text = switcher.GetPlayer().Director.Product.ToString();
+        Mat.GetComponent<Text>().text = switcher.GetPlayer().Director.Materials.ToString();
+        Mon.GetComponent<Text>().text = switcher.GetPlayer().Director.Money.ToString();
         ReadyButton.GetComponent<Button>().interactable = switcher.GetPlayer().Mutable;
     }
 

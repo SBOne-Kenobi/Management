@@ -163,7 +163,7 @@ namespace Management
 
         public void NextState(WorldState state)
         {
-            throw new NotImplementedException();
+            SetNewPriceLevel(state.Directors.Count);
         }
     }
 }

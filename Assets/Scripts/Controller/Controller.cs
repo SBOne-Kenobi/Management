@@ -8,39 +8,33 @@ public class Controller : MonoBehaviour
 {
 
     public Management.Management game = null;
-    public List<Player> players { get; private set; } = new List<Player>();
+    public List<Player> Players { get; private set; } = new List<Player>();
     public bool IsReadyToGoNext { get; private set; } = false;
     public bool AllPlayersReady { get; private set; } = false;
 
     public void AddPlayer(Player player)
     {
-        if (players.Contains(player))
+        if (Players.Contains(player))
             return;
-        player.Order = players.Count;
-        players.Add(player);
-    }
-
-    public int GetPriority(Player player)
-    {
-        int res = (player.Order - game.DirectorsOrder + players.Count) % players.Count;
-        return res;
+        player.Order = Players.Count;
+        Players.Add(player);
     }
 
     public void AddRequestOfMat(int price, int mat, Player player)
     {
-        game._requests_of_mat.Add(new Demand(price, mat, GetPriority(player)));
+        game.State.AddRequestOfMat(price, mat, player.Director);
     }
 
     public void AddRequestOfProd(int price, int prod, Player player)
     {
-        game._requests_of_prod.Add(new Offer(price, prod, GetPriority(player)));
+        game.State.AddRequestOfProd(price, prod, player.Director);
     }
 
     public void InitGame()
     {
         List<Director> directors = new List<Director>();
-        foreach(Player player in players)
-            directors.Add(player.director);
+        foreach(Player player in Players)
+            directors.Add(player.Director);
         game = new Management.Management(directors);
         IsReadyToGoNext = false;
         StartCoroutine(WaitForAllReady(GoNext));
@@ -55,9 +49,9 @@ public class Controller : MonoBehaviour
     public IEnumerator WaitForAllReady(Action action)
     {
         AllPlayersReady = false;
-        foreach (Player player in players)
+        foreach (Player player in Players)
         {
-            if (!player.director.IsBankrupt)
+            if (!player.Director.IsBankrupt)
                 StartCoroutine(player.WaitForReady());
         }
         
@@ -65,7 +59,7 @@ public class Controller : MonoBehaviour
         while (!isReady)
         {
             isReady = true;
-            players.ForEach(p => { if (!p.IsReady) isReady = false; });
+            Players.ForEach(p => { if (!p.IsReady) isReady = false; });
             if (!isReady)
                 yield return null;
         }
@@ -97,7 +91,8 @@ public class Controller : MonoBehaviour
         if (IsReadyToGoNext && AllPlayersReady)
         {
             IsReadyToGoNext = false;
-            if (game.State == 0)
+            //begin new state
+            if (game.State.CurrentState == GameState.FixCosts)
             {
                 //changed fabrics, became bankrupts...
                 if (game.Alive <= 1)
@@ -106,25 +101,22 @@ public class Controller : MonoBehaviour
                     return;
                 }
                 StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State == 1)
+            } else if (game.State.CurrentState == GameState.UpdateMarket)
             {
                 //update DemandOffer
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State == 2)
-            {
-                //sum up results of requests of mat.
-                
-                game._requests_of_mat.Clear();
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State == 3)
-            {
-                //sum up results of production.
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State == 4)
-            {
-                //sum up results of requests of prod.
-                game._requests_of_prod.Clear();
                 StartCoroutine(WaitForTime(GoNext, 1f));
+            } else if (game.State.CurrentState == GameState.MatRequest)
+            {
+                //start wait for requests
+                StartCoroutine(WaitForAllReady(GoNext));
+            } else if (game.State.CurrentState == GameState.Production)
+            {
+                //wait for production
+                StartCoroutine(WaitForAllReady(GoNext));
+            } else if (game.State.CurrentState == GameState.ProdRequest)
+            {
+                //wait for requests
+                StartCoroutine(WaitForAllReady(GoNext));
             }
         }
     }

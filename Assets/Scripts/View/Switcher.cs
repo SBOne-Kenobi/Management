@@ -12,7 +12,7 @@ public class Switcher : MonoBehaviour
 
     public Player GetPlayer()
     {
-        return controller.players[turn];
+        return controller.Players[turn];
     }
 
     private void Awake()
@@ -23,7 +23,7 @@ public class Switcher : MonoBehaviour
 
     public void Switch()
     {
-        turn = (turn + 1) % controller.players.Count;
+        turn = (turn + 1) % controller.Players.Count;
     }
 
     // Update is called once per frame

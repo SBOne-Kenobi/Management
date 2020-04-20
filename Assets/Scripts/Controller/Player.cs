@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour
 {
     private Controller controller;
-    public Director director { get; private set; } = new Director();
+    public Director Director { get; private set; } = new Director();
     public int Order = 0;
     public bool IsReady { get; private set; } = false;
     public bool Mutable { get; private set; } = false;

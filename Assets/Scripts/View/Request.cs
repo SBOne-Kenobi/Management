@@ -47,11 +47,11 @@ public class Request : MonoBehaviour
 
         if (controller.game.State == 3)
         {
-            am = Math.Min(am, switcher.GetPlayer().director.Product);
+            am = Math.Min(am, switcher.GetPlayer().Director.Product);
         }
         else if (controller.game.State == 1)
         {
-            pr = Math.Min(pr, switcher.GetPlayer().director.Money / Math.Max(am, 1));
+            pr = Math.Min(pr, switcher.GetPlayer().Director.Money / Math.Max(am, 1));
         }
         price.GetComponent<InputField>().text = pr.ToString();
         amount.GetComponent<InputField>().text = am.ToString();
