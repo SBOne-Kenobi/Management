@@ -14,7 +14,7 @@ namespace Management
         public Fabric[] Fabrics { get; set; }
 
         private bool _bankrupt;
-        public bool IsBankrupt { get; private set; }
+        public bool IsBankrupt => _bankrupt;
 
         public Bank Bank { get; set; }
 

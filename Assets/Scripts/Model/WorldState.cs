@@ -38,7 +38,7 @@ namespace Management
 
         public WorldState(List<Director> directors)
         {
-            CurrentMonth = 0;
+            CurrentMonth = 1;
             CurrentState = GameState.Start;
             CurrentMainDirector = 0;
             Directors = directors;

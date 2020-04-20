@@ -81,7 +81,8 @@ public class Controller : MonoBehaviour
 
     public void EndGame()
     {
-        game = null;
+        Debug.Log("End");
+        //Application.Quit();
     }
 
     public void Update()

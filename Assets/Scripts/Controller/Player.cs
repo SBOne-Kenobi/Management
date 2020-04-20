@@ -31,8 +31,9 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        
-    }
+        if (Director.IsBankrupt)
+            Debug.Log(Name);
+    }   
 
     public IEnumerator WaitForReady()
     {

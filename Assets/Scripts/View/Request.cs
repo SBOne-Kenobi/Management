@@ -93,7 +93,6 @@ public class Request : MonoBehaviour
             Transform price = input.transform.Find("InputPrice");
             int pr = Convert.ToInt32("0" + price.GetComponent<InputField>().text);
             int am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
-            Debug.Log(switcher.GetPlayer().Name + ": " + pr.ToString() + " " + am.ToString());
             if (controller.game.State.CurrentState == GameState.MatRequest)
             {
                 controller.AddRequestOfMat(pr, am, switcher.GetPlayer());
