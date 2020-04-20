@@ -28,10 +28,10 @@ public class Panel : MonoBehaviour
     private void Update()
     {
         State.GetComponent<Text>().text = "Current state: " + controller.game.ToString();
-        Mat.GetComponent<Text>().text = "M: " + (Math.Floor(controller.game.Bank.GetInfo.UMat * controller.game.Alive)).ToString();
-        Prod.GetComponent<Text>().text = "P: " + (Math.Floor(controller.game.Bank.GetInfo.UProd * controller.game.Alive)).ToString();
-        MinMat.GetComponent<Text>().text = "≥$: " + controller.game.Bank.GetInfo.MinPrice.ToString();
-        MaxProd.GetComponent<Text>().text = "≤$: " + controller.game.Bank.GetInfo.MaxPrice.ToString();
-        Month.GetComponent<Text>().text = "Month: " + controller.game.Month.ToString();
+        Mat.GetComponent<Text>().text = "M: " + (Math.Floor(controller.game.State.Bank.GetInfo.UMat * controller.game.Alive)).ToString();
+        Prod.GetComponent<Text>().text = "P: " + (Math.Floor(controller.game.State.Bank.GetInfo.UProd * controller.game.Alive)).ToString();
+        MinMat.GetComponent<Text>().text = "≥$: " + controller.game.State.Bank.GetInfo.MinPrice.ToString();
+        MaxProd.GetComponent<Text>().text = "≤$: " + controller.game.State.Bank.GetInfo.MaxPrice.ToString();
+        Month.GetComponent<Text>().text = "Month: " + controller.game.State.CurrentMonth.ToString();
     }
 }

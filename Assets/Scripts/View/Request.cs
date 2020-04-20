@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using Management;
 
 public class Request : MonoBehaviour
 {
@@ -45,11 +46,11 @@ public class Request : MonoBehaviour
             am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
         }
 
-        if (controller.game.State == 3)
+        if (controller.game.State.CurrentState == GameState.ProdRequest)
         {
             am = Math.Min(am, switcher.GetPlayer().Director.Product);
         }
-        else if (controller.game.State == 1)
+        else if (controller.game.State.CurrentState == GameState.MatRequest)
         {
             pr = Math.Min(pr, switcher.GetPlayer().Director.Money / Math.Max(am, 1));
         }
@@ -57,9 +58,17 @@ public class Request : MonoBehaviour
         amount.GetComponent<InputField>().text = am.ToString();
     }
 
+    private bool TimeToDo
+    {
+        get
+        {
+            return (controller.game.State.CurrentState == GameState.MatRequest ||
+                controller.game.State.CurrentState == GameState.ProdRequest);
+        }
+    }
     void Update()
     {
-        if (!switcher.GetPlayer().IsReady && (controller.game.State == 1 || controller.game.State == 3))
+        if (!switcher.GetPlayer().IsReady && TimeToDo)
         {
             button.SetActive(false);
             input.SetActive(true);
@@ -78,14 +87,14 @@ public class Request : MonoBehaviour
 
     public void MakeRequest()
     {
-        if (controller.game.State == 1 || controller.game.State == 3)
+        if (TimeToDo)
         {
             Transform amount = input.transform.Find("InputAmount");
             Transform price = input.transform.Find("InputPrice");
             int pr = Convert.ToInt32("0" + price.GetComponent<InputField>().text);
             int am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
             Debug.Log(switcher.GetPlayer().Name + ": " + pr.ToString() + " " + am.ToString());
-            if (controller.game.State == 1)
+            if (controller.game.State.CurrentState == GameState.MatRequest)
             {
                 controller.AddRequestOfMat(pr, am, switcher.GetPlayer());
             }
