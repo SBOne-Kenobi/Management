@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using Management;
 
 namespace Management
 {
-    public class Fabric
+    public class Fabric : IWorldObject
     {
         public static int StartBuildTime { get; }
+        protected Director Owner { get; private set; }
+        protected int Pos { get; private set; }
 
         protected int _build_time;
         public int BuildTime => _build_time;
@@ -22,8 +25,11 @@ namespace Management
         
         static public List<Fabric> Fabrics = new List<Fabric>();
 
-        public Fabric(int build_time)
+        public Fabric(Director owner, int pos, int build_time)
         {
+            Owner = owner;
+            Pos = pos;
+            owner.Fabrics[pos] = this;
             _current_mat = 0;
             _build_time = build_time;
             Fabrics.Add(this);
@@ -38,7 +44,7 @@ namespace Management
 
         public bool AddMat()
         {
-            if (_current_mat < MaxMat)
+            if (_current_mat < MaxMat && _build_time == 0)
             {
                 _current_mat++;
                 return true;
@@ -48,7 +54,7 @@ namespace Management
 
         public bool RemoveMat()
         {
-            if (_current_mat > 0)
+            if (_current_mat > 0 && _build_time == 0)
             {
                 _current_mat--;
                 return true;
@@ -58,13 +64,24 @@ namespace Management
 
         virtual public void DecreaseTiming()
         {
-            if (_build_time >= 0)
+            if (_build_time > 0)
                 _build_time--;
+        }
+
+        public void NextState(WorldState state)
+        {
+            DecreaseTiming();
+        }
+
+        public void Remove()
+        {
+            Owner.Fabrics[Pos] = null;
+            Fabrics.Remove(this);
         }
 
         ~Fabric()
         {
-            Fabrics.Remove(this);
+            Remove();
         }
     }
 }

@@ -77,7 +77,7 @@ namespace Management
         }
     }
 
-    public class Bank
+    public class Bank : IWorldObject
     {
         public static float[,] ProbOfPriceChange { get; } =
         {
@@ -159,6 +159,11 @@ namespace Management
                 res.Add(new Offer(o.Price, got, o.Priority));
             }
             return res;
+        }
+
+        public void NextState(WorldState state)
+        {
+            SetNewPriceLevel(state.Directors.Count);
         }
     }
 }

@@ -10,8 +10,8 @@ namespace Management
         public new static int BuildPrice { get; } = 10000;
         protected new static int[] _proc_price { get; } = { 0, 2000, 3000 };
 
-        public AutoFabric() : base(StartBuildTime) { }
+        public AutoFabric(Director owner, int pos) : base(owner, pos, StartBuildTime) { }
 
-        internal AutoFabric(int build_time) : base(build_time) { }
+        internal AutoFabric(Director owner, int pos, int build_time) : base(owner, pos, build_time) { }
     }
 }
