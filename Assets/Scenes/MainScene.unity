@@ -1923,6 +1923,7 @@ GameObject:
   - component: {fileID: 842824291}
   - component: {fileID: 842824293}
   - component: {fileID: 842824292}
+  - component: {fileID: 842824294}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -1989,6 +1990,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 842824290}
   m_CullTransparentMesh: 0
+--- !u!114 &842824294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842824290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f26187b76ccbf940995f346a7ae3361, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &848940686
 GameObject:
   m_ObjectHideFlags: 0
@@ -3865,9 +3878,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 1681156906}
-  - {fileID: 2115648020}
+  m_Children: [{fileID: 1681156906}, {fileID: 2115648020}]
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
