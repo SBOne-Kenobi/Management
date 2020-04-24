@@ -5,14 +5,11 @@ using UnityEngine.UI;
 
 public class ProdElement : MonoBehaviour
 {
-    Player player;
     PlayerCanvas parent;
 
-    private void Start()
+    virtual protected void Start()
     {
-        var c = GetComponentsInParent<Canvas>();
-        parent = c[c.Length - 1].GetComponent<PlayerCanvas>();
-        player = parent.player;
+        parent = GetComponentInParent<PlayerCanvas>();
         enabled = parent.IsOwner;
     }
 }

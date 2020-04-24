@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UpgradeButton : ProdElement
+public class ProdController : ProdElement
 {
     
 }
