@@ -15,12 +15,20 @@ public class Cell : MonoBehaviour
 
     private void AdaptMode()
     {
-        
+        switch (parent.Mode)
+        {
+            case ProductionMode.PROD:
+                break;
+            case ProductionMode.BUY:
+                break;
+            case ProductionMode.UPGRADE:
+                break;
+        }
     }
 
     private void Update()
     {
-        
+        AdaptMode();
     }
 
 }
