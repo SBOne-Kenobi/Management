@@ -815,7 +815,7 @@ GameObject:
   - component: {fileID: 7522606972807309333}
   - component: {fileID: 7522606972807309334}
   m_Layer: 5
-  m_Name: UpgrageButton
+  m_Name: UpgradeButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1519,6 +1519,11 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 7495727148050464706, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8009277208198969916, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
       propertyPath: m_IsActive
@@ -1648,6 +1653,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495727148050464706, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8009277208198969916, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
@@ -1919,6 +1929,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cell3
       objectReference: {fileID: 0}
+    - target: {fileID: 2037878012956154593, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2752882637437167833, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -2023,6 +2038,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495727148050464706, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8009277208198969916, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
@@ -2153,6 +2173,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7495727148050464706, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8009277208198969916, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
