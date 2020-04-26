@@ -60,6 +60,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -137,6 +138,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -214,6 +216,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -293,6 +296,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -383,6 +387,7 @@ GameObject:
   - component: {fileID: 7522606972777150837}
   - component: {fileID: 7522606972777150835}
   - component: {fileID: 7522606972777150836}
+  - component: {fileID: 4251497022487336900}
   m_Layer: 5
   m_Name: FabricsField
   m_TagString: Untagged
@@ -438,6 +443,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -451,6 +457,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4251497022487336900
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7522606972777150838}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89721acfc20579e41b59cfd48f4a7496, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7522606972788485910
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,6 +481,7 @@ GameObject:
   - component: {fileID: 7522606972788485906}
   - component: {fileID: 7522606972788485907}
   - component: {fileID: 7522606972788485908}
+  - component: {fileID: 5969900048180225001}
   m_Layer: 5
   m_Name: BuyButton
   m_TagString: Untagged
@@ -512,6 +531,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -567,7 +587,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7522606972788485907}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7853098457101074880}
+        m_MethodName: BuyMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &5969900048180225001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7522606972788485910}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8e752bb898c3454cb3fa005cdad40b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7522606972807309336
 GameObject:
   m_ObjectHideFlags: 0
@@ -580,6 +623,7 @@ GameObject:
   - component: {fileID: 7522606972807309332}
   - component: {fileID: 7522606972807309333}
   - component: {fileID: 7522606972807309334}
+  - component: {fileID: 4978078860229947855}
   m_Layer: 5
   m_Name: UpgradeButton
   m_TagString: Untagged
@@ -629,6 +673,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -684,7 +729,30 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 7522606972807309333}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 7853098457101074880}
+        m_MethodName: UpgradeMode
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &4978078860229947855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7522606972807309336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46a19a6f6dd943f40908f4c498abb436, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7522606972837197507
 GameObject:
   m_ObjectHideFlags: 0
@@ -745,6 +813,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -774,6 +843,7 @@ GameObject:
   - component: {fileID: 7522606972876925604}
   - component: {fileID: 7522606972876925605}
   - component: {fileID: 7522606972876925606}
+  - component: {fileID: 7853098457101074880}
   m_Layer: 5
   m_Name: PlayerCanvas
   m_TagString: Untagged
@@ -865,6 +935,20 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &7853098457101074880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7522606972876925607}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb672a64ee2430447abb8183963dab66, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 0}
+  prods: []
 --- !u!1 &7522606972947687500
 GameObject:
   m_ObjectHideFlags: 0
@@ -930,6 +1014,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.392}
   m_RaycastTarget: 1
+  m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1387,6 +1472,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cell1
       objectReference: {fileID: 0}
+    - target: {fileID: 1698913672004360781, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2185955522828438118, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1532,10 +1622,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 0.1000061
       objectReference: {fileID: 0}
+    - target: {fileID: 7840002394110979625, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8009277208198969916, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8093715179764319717, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8465787207558679477, guid: a35eab616777a524fb069e03ab79ec91,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8589067522150503848, guid: a35eab616777a524fb069e03ab79ec91,
         type: 3}

@@ -4,21 +4,21 @@ namespace Management
 {
     public class SimpleFabric : Fabric
     {
-        public new static int StartBuildTime { get; } = 5;
-        public static int UpgradePrice { get; } = 7000;
-        public static int StartUpgradeTime { get; } = 9;
-        public new static int MaxMat { get; } = 1;
-        public new static int BuildPrice { get; } = 5000;
-        protected new static int[] _proc_price { get; } = { 0, 2000 };
+        override public int StartBuildTime { get; } = 5;
+        public int UpgradePrice { get; } = 7000;
+        public int StartUpgradeTime { get; } = 9;
+        override public int MaxMat { get; } = 1;
+        override public int BuildPrice { get; } = 5000;
+        override protected int[] _proc_price { get; } = { 0, 2000 };
 
         private int _upgrade_time;
 
-        public SimpleFabric(Director owner, int pos) : base(owner, pos, StartBuildTime)
+        public SimpleFabric(Director owner) : base(owner, 5)
         {
             _upgrade_time = -1;
         }
 
-        internal SimpleFabric(Director owner, int pos, int build_time) : base(owner, pos, build_time)
+        internal SimpleFabric(Director owner, int build_time) : base(owner, build_time)
         {
             _upgrade_time = -1;
         }
@@ -28,9 +28,9 @@ namespace Management
             _upgrade_time = StartUpgradeTime;
         }
 
-        public AutoFabric Upgrade()
+        public void Upgrade()
         {
-            return new AutoFabric(Owner, Pos, 0);
+            Owner.ExchangeFabric(this, new AutoFabric(Owner, 0));
         }
 
         public override void DecreaseTiming()
@@ -39,10 +39,7 @@ namespace Management
             if (_upgrade_time > 0)
                 _upgrade_time--;
             if (_upgrade_time == 0)
-            {
-                Remove();
                 Upgrade();
-            }
         }
     }
 }

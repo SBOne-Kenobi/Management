@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class SwitchCanvas : MonoBehaviour
 {
-    public Canvas CommonCanvas;
-    private Canvas CurrentCanvas = null;
+    public GameObject CommonCanvas;
+    private GameObject CurrentCanvas = null;
 
     public void GoCommon()
     {
         if (CurrentCanvas != null)
         {
-            CurrentCanvas.enabled = false;
+            CurrentCanvas.SetActive(false);
             CurrentCanvas = null;
         }
-        CommonCanvas.enabled = true;
+        CommonCanvas.SetActive(true);
     }
 
-    public void GoCanvas(Canvas canvas)
+    public void GoCanvas(GameObject canvas)
     {
         CurrentCanvas = canvas;
-        CommonCanvas.enabled = false;
-        CurrentCanvas.enabled = true;
+        CommonCanvas.SetActive(false);
+        CurrentCanvas.GetComponent<PlayerCanvas>().Activate();
     }
 }

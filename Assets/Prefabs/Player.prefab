@@ -226,7 +226,7 @@ MonoBehaviour:
   InfoPanel: {fileID: 4640051974561903895}
   Name: {fileID: 4074524602446236762}
   player: {fileID: 3201049783714092881}
-  PlayerCanvasPrefab: {fileID: 7522606972876925604, guid: 80b25607e8201b2459351a9971051fed,
+  PlayerCanvasPrefab: {fileID: 7522606972876925607, guid: 80b25607e8201b2459351a9971051fed,
     type: 3}
 --- !u!1 &4074524602446236762
 GameObject:

@@ -9,16 +9,17 @@ public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public GameObject InfoPanel;
     public GameObject Name;
     public Player player;
-    private Canvas PlayerCanvas;
-    public Canvas PlayerCanvasPrefab;
+    private GameObject PlayerCanvas;
+    public GameObject PlayerCanvasPrefab;
     private SwitchCanvas switchCanvas;
 
     void Start()
     {
         switchCanvas = FindObjectOfType<SwitchCanvas>();
         PlayerCanvas = Instantiate(PlayerCanvasPrefab);
-        PlayerCanvas.enabled = false;
         PlayerCanvas.transform.Find("PlayerInfo").GetComponent<PlayerInfo>().player = player;
+        PlayerCanvas.GetComponent<PlayerCanvas>().player = player;
+        PlayerCanvas.SetActive(false);
     }
 
     public void OnPointerClick(PointerEventData eventData)

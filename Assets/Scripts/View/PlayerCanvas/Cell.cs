@@ -3,52 +3,39 @@ using System.Collections.Generic;
 using UnityEngine;
 using Management;
 
-public class Cell : MonoBehaviour
+public class Cell : ProdElement
 {
-    public Fabric fabric = null;
-    PlayerCanvas parent;
-
-    public GameObject Production;
-    public GameObject Upgrade;
-    public GameObject Buy;
-
-    private void Start()
+    public Director director;
+    public int pos;
+    public Fabric Fabric
     {
-        parent = GetComponentInParent<PlayerCanvas>();
-    }
-
-    private void AdaptMode()
-    {
-        switch (parent.Mode)
+        get
         {
-            case ProductionMode.PROD:
-                Production.SetActive(true);
-                Upgrade.SetActive(false);
-                Buy.SetActive(false);
-                break;
-            case ProductionMode.BUY:
-                Production.SetActive(false);
-                Upgrade.SetActive(false);
-                Buy.SetActive(true);
-                break;
-            case ProductionMode.UPGRADE:
-                Production.SetActive(false);
-                Upgrade.SetActive(true);
-                Buy.SetActive(false);
-                break;
+            if (director == null)
+                return null;
+            return director.Fabrics[pos];
         }
     }
+    public GameObject Production, Upgrade, Buy;
 
-    private void AdaptFabric()
+    protected override void SetBuyMode(bool owner)
     {
-        
+        Production.SetActive(false);
+        Upgrade.SetActive(false);
+        Buy.SetActive(true);
     }
 
-    private void Update()
+    protected override void SetProdMode(bool owner)
     {
-        AdaptMode();
-        if (Production.activeSelf)
-            AdaptFabric();
+        Production.SetActive(true);
+        Upgrade.SetActive(false);
+        Buy.SetActive(false);
     }
 
+    protected override void SetUpgradeMode(bool owner)
+    {
+        Production.SetActive(false);
+        Upgrade.SetActive(Fabric != null);
+        Buy.SetActive(false);
+    }
 }
