@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
 
     public void Clicked()
     {
-        CommonCanvas.SetActive(false);
+        //CommonCanvas.SetActive(false);
         ReadyButton.GetComponent<Button>().interactable = false;
         MenuBuntton.GetComponent<Button>().interactable = false;
         MenuCanvas.SetActive(true);
@@ -29,7 +29,7 @@ public class Menu : MonoBehaviour
         MenuCanvas.SetActive(false);
         ReadyButton.GetComponent<Button>().interactable = true;
         MenuBuntton.GetComponent<Button>().interactable = true;
-        CommonCanvas.SetActive(true);
+        //CommonCanvas.SetActive(true);
 
         Time.timeScale = 1f;
 
