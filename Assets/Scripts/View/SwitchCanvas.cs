@@ -5,7 +5,7 @@ using UnityEngine;
 public class SwitchCanvas : MonoBehaviour
 {
     public GameObject CommonCanvas;
-    private GameObject CurrentCanvas = null;
+    public GameObject CurrentCanvas { get; private set; } = null;
 
     public void GoCommon()
     {

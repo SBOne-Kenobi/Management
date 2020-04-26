@@ -9,12 +9,19 @@ public class Menu : MonoBehaviour
     public GameObject MenuBuntton;
     public GameObject ReadyButton;
     public GameObject MenuCanvas;
-    public GameObject CommonCanvas;
     public static bool isPaused = false;
+
+    public SwitchCanvas Switcher;
+
+    private GameObject CanvasHolder = null;
 
     public void Clicked()
     {
-        //CommonCanvas.SetActive(false);
+        if (Switcher.CurrentCanvas == null)
+            CanvasHolder = Switcher.CommonCanvas;
+        else
+            CanvasHolder = Switcher.CurrentCanvas;
+        CanvasHolder.SetActive(false);
         ReadyButton.GetComponent<Button>().interactable = false;
         MenuBuntton.GetComponent<Button>().interactable = false;
         MenuCanvas.SetActive(true);
@@ -29,8 +36,8 @@ public class Menu : MonoBehaviour
         MenuCanvas.SetActive(false);
         ReadyButton.GetComponent<Button>().interactable = true;
         MenuBuntton.GetComponent<Button>().interactable = true;
-        //CommonCanvas.SetActive(true);
-
+        CanvasHolder.SetActive(true);
+        CanvasHolder = null;
         Time.timeScale = 1f;
 
         isPaused = false;

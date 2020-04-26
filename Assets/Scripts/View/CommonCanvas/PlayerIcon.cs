@@ -24,6 +24,7 @@ public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        OnPointerExit(eventData);
         switchCanvas.GoCanvas(PlayerCanvas);
     }
 
