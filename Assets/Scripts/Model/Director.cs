@@ -44,8 +44,30 @@ namespace Management
             _bankrupt = false;
             Fabrics = new Fabric[8];
             _fab_fix_costs = 0;
-            new SimpleFabric(this, 0);
-            new SimpleFabric(this, 1);
+            for (int i = 0; i < 2; i++)
+                Fabrics[i] = new SimpleFabric(this, 0);
+            for (int i = 2; i < Fabrics.Length; i++)
+                Fabrics[i] = null;
+        }
+
+        public void RemoveFabric(Fabric fab)
+        {
+            for (int i = 0; i < Fabrics.Length; i++)
+                if (Fabrics[i] == fab)
+                {
+                    Fabrics[i] = null;
+                    break;
+                }
+        }
+
+        public void ExchangeFabric(Fabric fab, Fabric new_fab)
+        {
+            for (int i = 0; i < Fabrics.Length; i++)
+                if (Fabrics[i] == fab)
+                {
+                    Fabrics[i] = new_fab;
+                    break;
+                }
         }
 
         public void MakeRequestOfMat(int price, int get)
@@ -89,6 +111,14 @@ namespace Management
             return Product * Bank.GetInfo.MaxPrice;
         }
 
+        public int GetIndex(Fabric fabric)
+        {
+            for (int i = 0; i < Fabrics.Length; i++)
+                if (Fabrics[i] == fabric)
+                    return i;
+            return -1;
+        }
+
         public bool AddMaterial(int index)
         {
             if (Fabrics[index] == null)
@@ -103,6 +133,8 @@ namespace Management
                     Fabrics[index].RemoveMat();
             }
             Money -= Fabrics[index].ProcPrice;
+            if (ret)
+                Materials--;
             return ret;
         }
 
@@ -113,6 +145,8 @@ namespace Management
             Money += Fabrics[index].ProcPrice;
             bool ret = Fabrics[index].RemoveMat();
             Money -= Fabrics[index].ProcPrice;
+            if (ret)
+                Materials++;
             return ret;
         }
 
@@ -136,7 +170,7 @@ namespace Management
                 {
                     if (fabric == null)
                         continue;
-                    Materials += fabric.DoProcessing();
+                    Product += fabric.DoProcessing();
                 }
             }
         }
