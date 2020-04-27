@@ -38,7 +38,10 @@ public class Cell : ProdElement
         Buy.SetActive(false);
         bool tof = Fabric != null && Fabric.BuildTime == 0 && (Fabric is SimpleFabric);
         if (tof)
-            tof = (Fabric as SimpleFabric).UpgradeTime == -1;
+        {
+            tof = ((Fabric as SimpleFabric).UpgradeTime == -1) && 
+                (director.Money >= (Fabric as SimpleFabric).UpgradePrice);
+        }
         Upgrade.SetActive(tof);
     }
 
@@ -56,7 +59,7 @@ public class Cell : ProdElement
 
     public void UpgradeFabric()
     {
-        if (Fabric is SimpleFabric)
-            (Fabric as SimpleFabric).StartUpgade();
+        if (director != null)
+            director.UpgradeFabric(pos);
     }
 }

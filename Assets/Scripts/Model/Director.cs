@@ -84,14 +84,16 @@ namespace Management
         public void UpgradeFabric(int index)
         {
             if (Fabrics[index] != null)
+            {
                 if (Fabrics[index] is SimpleFabric)
                 {
                     if (Money >= (Fabrics[index] as SimpleFabric).UpgradePrice)
                     {
                         Money -= (Fabrics[index] as SimpleFabric).UpgradePrice;
-                        (Fabrics[index] as SimpleFabric).Upgrade();
+                        (Fabrics[index] as SimpleFabric).StartUpgade();
                     }
                 }
+            }
         }
 
         public void ExchangeFabric(Fabric fab, Fabric new_fab)

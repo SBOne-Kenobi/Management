@@ -8,10 +8,12 @@ public class Timer : MonoBehaviour
 {
     float CurrentTime = 0;
     Controller controller;
+    SwitchCanvas switcher;
 
     private void Awake()
     {
         controller = FindObjectOfType<Controller>();
+        switcher = FindObjectOfType<SwitchCanvas>();
     }
 
     public IEnumerator StartTimer(int time)
@@ -28,6 +30,7 @@ public class Timer : MonoBehaviour
             CurrentTime = 0f;
             if (state == controller.game.State.CurrentState)
             {
+                switcher.GoCommon();
                 foreach (Player player in controller.Players)
                     player.GetReady();
             }

@@ -8,7 +8,7 @@ namespace Management
         override public int StartBuildTime { get; } = 7;
         override public int MaxMat { get; } = 2;
         override public int BuildPrice { get; } = 10000;
-        protected new static int[] _proc_price { get; } = { 0, 2000, 3000 };
+        override protected int[] _proc_price { get; } = { 0, 2000, 3000 };
 
         public AutoFabric(Director owner) : base(owner, 7) { }
 

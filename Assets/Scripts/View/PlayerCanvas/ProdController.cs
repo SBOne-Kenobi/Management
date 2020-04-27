@@ -26,7 +26,6 @@ public class ProdController : ProdElement
         {
             Fabric.Owner.AddMaterial(Fabric.Owner.GetIndex(Fabric));
         }
-        Debug.Log(Fabric.MaxMat);
     }
 
     public void Reduce()
@@ -35,7 +34,6 @@ public class ProdController : ProdElement
         {
             Fabric.Owner.RemoveMaterial(Fabric.Owner.GetIndex(Fabric));
         }
-        Debug.Log(Fabric.MaxMat);
     }
 
     protected override void SetProdMode(bool owner)

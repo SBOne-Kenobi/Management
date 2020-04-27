@@ -40,7 +40,6 @@ namespace Management
                 UpgradeTime--;
             if (UpgradeTime == 0)
             {
-                UpgradeTime = -2;
                 Upgrade();
             }
         }
