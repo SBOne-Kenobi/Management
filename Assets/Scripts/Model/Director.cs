@@ -50,6 +50,27 @@ namespace Management
                 Fabrics[i] = null;
         }
 
+        public void SellFabric(int index)
+        {
+            if (Fabrics[index] != null)
+            {
+                Money += Fabrics[index].BuildPrice;
+                Fabrics[index].Remove();
+            }
+        }
+
+        public void BuyFabric(int index)
+        {
+            if (Fabrics[index] == null)
+            {
+                Fabrics[index] = new SimpleFabric(this);
+                if (Money >= Fabrics[index].BuildPrice)
+                    Money -= Fabrics[index].BuildPrice;
+                else
+                    Fabrics[index].Remove();
+            }
+        }
+
         public void RemoveFabric(Fabric fab)
         {
             for (int i = 0; i < Fabrics.Length; i++)
@@ -57,6 +78,19 @@ namespace Management
                 {
                     Fabrics[i] = null;
                     break;
+                }
+        }
+
+        public void UpgradeFabric(int index)
+        {
+            if (Fabrics[index] != null)
+                if (Fabrics[index] is SimpleFabric)
+                {
+                    if (Money >= (Fabrics[index] as SimpleFabric).UpgradePrice)
+                    {
+                        Money -= (Fabrics[index] as SimpleFabric).UpgradePrice;
+                        (Fabrics[index] as SimpleFabric).Upgrade();
+                    }
                 }
         }
 

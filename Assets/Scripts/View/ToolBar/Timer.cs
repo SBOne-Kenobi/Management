@@ -42,7 +42,7 @@ public class Timer : MonoBehaviour
             switch (controller.game.State.CurrentState)
             {
                 case GameState.FixCosts:
-                    AimTime = 30;
+                    AimTime = 60 + 60;
                     break;
                 case GameState.MatRequest:
                     AimTime = 60 + 60;

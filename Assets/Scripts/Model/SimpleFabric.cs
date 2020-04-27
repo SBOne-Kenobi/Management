@@ -11,21 +11,21 @@ namespace Management
         override public int BuildPrice { get; } = 5000;
         override protected int[] _proc_price { get; } = { 0, 2000 };
 
-        private int _upgrade_time;
+        public int UpgradeTime { get; private set; }
 
         public SimpleFabric(Director owner) : base(owner, 5)
         {
-            _upgrade_time = -1;
+            UpgradeTime = -1;
         }
 
         internal SimpleFabric(Director owner, int build_time) : base(owner, build_time)
         {
-            _upgrade_time = -1;
+            UpgradeTime = -1;
         }
 
         public void StartUpgade()
         {
-            _upgrade_time = StartUpgradeTime;
+            UpgradeTime = StartUpgradeTime;
         }
 
         public void Upgrade()
@@ -36,10 +36,13 @@ namespace Management
         public override void DecreaseTiming()
         {
             base.DecreaseTiming();
-            if (_upgrade_time > 0)
-                _upgrade_time--;
-            if (_upgrade_time == 0)
+            if (UpgradeTime > 0)
+                UpgradeTime--;
+            if (UpgradeTime == 0)
+            {
+                UpgradeTime = -2;
                 Upgrade();
+            }
         }
     }
 }

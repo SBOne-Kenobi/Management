@@ -35,7 +35,28 @@ public class Cell : ProdElement
     protected override void SetUpgradeMode(bool owner)
     {
         Production.SetActive(false);
-        Upgrade.SetActive(Fabric != null);
         Buy.SetActive(false);
+        bool tof = Fabric != null && Fabric.BuildTime == 0 && (Fabric is SimpleFabric);
+        if (tof)
+            tof = (Fabric as SimpleFabric).UpgradeTime == -1;
+        Upgrade.SetActive(tof);
+    }
+
+    public void BuyFabric()
+    {
+        if (director != null)
+            director.BuyFabric(pos);
+    }
+
+    public void SellFabric()
+    {
+        if (director != null)
+            director.SellFabric(pos);
+    }
+
+    public void UpgradeFabric()
+    {
+        if (Fabric is SimpleFabric)
+            (Fabric as SimpleFabric).StartUpgade();
     }
 }

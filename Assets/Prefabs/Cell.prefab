@@ -285,7 +285,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 3025076639310168076}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2877254099011163093}
+        m_MethodName: SellFabric
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2211300675295575296
 GameObject:
   m_ObjectHideFlags: 0
@@ -551,7 +562,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8923853626688239720}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2877254099011163093}
+        m_MethodName: BuyFabric
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3903737824044345708
 GameObject:
   m_ObjectHideFlags: 0
@@ -1148,7 +1170,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8300018285363126653}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2877254099011163093}
+        m_MethodName: UpgradeFabric
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8914018148753940994
 GameObject:
   m_ObjectHideFlags: 0
@@ -1200,4 +1233,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Buy: {fileID: 3503532744367923168}
-  Cell: {fileID: 2082778776173110252}
+  Sell: {fileID: 2082778776173110252}

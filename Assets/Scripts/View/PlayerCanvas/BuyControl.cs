@@ -5,11 +5,12 @@ using UnityEngine;
 public class BuyControl : MonoBehaviour
 {
     public GameObject Buy;
-    public GameObject Cell;
+    public GameObject Sell;
+
     private void Update()
     {
         bool tof = GetComponentInParent<Cell>().Fabric == null;
         Buy.SetActive(tof);
-        Cell.SetActive(!tof);
+        Sell.SetActive(!tof);
     }
 }
