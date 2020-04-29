@@ -96,14 +96,12 @@ namespace Management
             }
         }
 
-        public void ExchangeFabric(Fabric fab, Fabric new_fab)
+        public void ExchangeFabric(Fabric oldFabric, Fabric newFabric)
         {
-            for (int i = 0; i < Fabrics.Length; i++)
-                if (Fabrics[i] == fab)
-                {
-                    Fabrics[i] = new_fab;
-                    break;
-                }
+             readonly int oldFaricIndex = GetIndex(oldFabric);
+             if (oldFaricIndex >= 0) {
+                  Fabrics[oldFaricIndex] = newFabric;
+             }
         }
 
         public void MakeRequestOfMat(int price, int get)
