@@ -24,15 +24,10 @@ public class Player : MonoBehaviour
         controller.AddPlayer(this);
     }
 
-    public void Start()
-    {
-        transform.Find("Name").GetComponent<Text>().text = Name;
-    }
-
     public void Update()
     {
         if (Director.IsBankrupt)
-            Debug.Log(Name);
+            Debug.Log(Name + " Bankrupt!");
     }   
 
     public IEnumerator WaitForReady()
