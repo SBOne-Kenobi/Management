@@ -9,7 +9,10 @@ public class Menu : MonoBehaviour
     public GameObject MenuBuntton;
     public GameObject ReadyButton;
     public GameObject MenuCanvas;
+    public GameManager manager;
     public static bool isPaused = false;
+    [SerializeField]
+    private float TimeDelay = 0f;
 
     public SwitchCanvas Switcher;
 
@@ -26,7 +29,7 @@ public class Menu : MonoBehaviour
         MenuBuntton.GetComponent<Button>().interactable = false;
         MenuCanvas.SetActive(true);
 
-        Time.timeScale = 0f;
+        Time.timeScale = TimeDelay;
 
         isPaused = true;
     }
@@ -45,6 +48,7 @@ public class Menu : MonoBehaviour
 
     public void Exit()
     {
-        Application.Quit();
+        Time.timeScale = 1f;
+        manager.Leave();
     }
 }

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    private Controller controller;
     public Director Director { get; private set; } = new Director();
     public int Order = 0;
     public bool IsReady { get; private set; } = false;
@@ -16,12 +15,6 @@ public class Player : MonoBehaviour
     {
         if (Mutable)
             IsReady = true;
-    }
-
-    public void Awake()
-    {
-        controller = FindObjectOfType<Controller>();
-        controller.AddPlayer(this);
     }
 
     public void Update()
