@@ -4,32 +4,63 @@ using UnityEngine;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
 using Photon.Realtime;
+using System.Linq;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviourPunCallbacks
 {
-    
-    public List<Player> Players { get; private set; } = new List<Player>();
 
-    private Player Player;
+    public List<PlayerControl> Players => GetComponent<Controller>().Players;
+    
+    public GameObject Game;
+
+    [SerializeField]
+    private GameObject Lobby;
 
     [SerializeField]
     private GameObject PlayerPrefab;
 
     [SerializeField]
-    private GameObject Game;
+    private ListPlayer ListPlayer;
 
-    public void Start()
+    [SerializeField]
+    private GameObject PlayerItemPrefab;
+
+    [SerializeField]
+    private Button ReadyButton;
+
+    [SerializeField]
+    private Button StartButton;
+
+    private void Start()
     {
-        //Vector3 pos = new Vector3(Random.Range(-5f, 5f), Random.Range(-5f, 5f));
-        //PhotonNetwork.Instantiate(PlayerPrefab.name, pos, Quaternion.identity);
-        Player = new Player();
-        Players.Add(Player);
+        //создать нового игрока
+        PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0,0,0), Quaternion.identity);
+        var item = PhotonNetwork.Instantiate(PlayerItemPrefab.name, new Vector3(0,0,0), Quaternion.identity);
+        ReadyButton.onClick.AddListener(item.GetComponent<PlayerItem>().GetReady);
+        StartButton.onClick.AddListener(StartGame);
+    }
+
+    private void Update()
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            bool AllReady = true;
+            foreach (PlayerItem item in ListPlayer.List)
+                AllReady = AllReady && item.IsReady;
+            StartButton.gameObject.SetActive(AllReady);
+        } else
+        {
+            StartButton.gameObject.SetActive(false);
+        }
     }
 
     public void StartGame()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         Game.SetActive(true);
+        Lobby.SetActive(false);
+        GetComponent<Controller>().InitGame();
     }
 
     public override void OnLeftRoom()
@@ -44,6 +75,14 @@ public class GameManager : MonoBehaviourPunCallbacks
 
     public override void OnPlayerLeftRoom(Photon.Realtime.Player otherPlayer)
     {
+        if (!Game.activeSelf)
+        {
+            PlayerControl player = Players.First(p => p.PhotonView.Owner == null);
+            Players.Remove(player);
+            PlayerItem item = ListPlayer.List.First(p => p.PhotonView.Owner == null);
+            ListPlayer.Remove(item);
+            PhotonNetwork.DestroyPlayerObjects(otherPlayer);
+        }
         Debug.Log(otherPlayer.NickName + " leave room");
     }
 

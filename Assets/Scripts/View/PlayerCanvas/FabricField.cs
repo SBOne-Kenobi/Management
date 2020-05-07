@@ -5,7 +5,7 @@ using Management;
 
 public class FabricField : MonoBehaviour
 {
-    Player player;
+    PlayerControl player;
 
     private void Start()
     {

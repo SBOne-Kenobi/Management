@@ -4,6 +4,7 @@ using Management;
 
 namespace Management
 {
+
     public class Fabric : IWorldObject
     {
         public virtual int StartBuildTime { get; }

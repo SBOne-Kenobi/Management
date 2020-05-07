@@ -11,15 +11,22 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private Text LogText;
 
     [SerializeField]
-    private readonly List<Button> Buttons;
+    private InputField NickName;
 
+    [SerializeField]
+    private List<Button> Buttons;
+
+    
     // Start is called before the first frame update
     void Start()
     {
         foreach (Button button in Buttons)
             button.interactable = false;
 
-        PhotonNetwork.NickName = "Player#" + Random.Range(1000, 9999);
+        string Nick = PlayerPrefs.GetString("NickName", "Player#" + Random.Range(1000, 9999));
+        PhotonNetwork.NickName = Nick;
+        NickName.text = Nick;
+
         Log("Players name is set to " + PhotonNetwork.NickName);
 
         PhotonNetwork.AutomaticallySyncScene = true;
@@ -43,18 +50,21 @@ public class LobbyManager : MonoBehaviourPunCallbacks
 
     public void CreateRoom()
     {
-        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2, IsOpen = true });
+        PhotonNetwork.NickName = NickName.text;
+        PlayerPrefs.SetString("NickName", NickName.text);
+        PhotonNetwork.CreateRoom(null, new RoomOptions { MaxPlayers = 2, IsOpen = true, CleanupCacheOnLeave = false });
     }
 
     public void JoinRoom()
     {
+        PhotonNetwork.NickName = NickName.text;
+        PlayerPrefs.SetString("NickName", NickName.text);
         PhotonNetwork.JoinRandomRoom();
     }
 
     public override void OnJoinedRoom()
     {
         Log("Joined the room");
-
         PhotonNetwork.LoadLevel("GameScene");
     }
 

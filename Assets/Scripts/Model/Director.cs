@@ -5,11 +5,11 @@ namespace Management
 
     public class Director : IWorldObject
     {
-        public int Materials { get; private set; }
+        public int Materials { get; set; }
 
-        public int Product { get; private set; }
+        public int Product { get; set; }
 
-        public int Money { get; private set; }
+        public int Money { get; set; }
 
         public Fabric[] Fabrics { get; set; }
 

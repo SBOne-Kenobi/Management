@@ -3,16 +3,21 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Management;
+using Photon.Pun;
+using ExitGames.Client.Photon;
+using Photon.Realtime;
 
-public class Controller : MonoBehaviour
+public class Controller : MonoBehaviour, IOnEventCallback
 {
-
     public Management.Management game = null;
-    public List<Player> Players { get; private set; } = new List<Player>();
+    public List<PlayerControl> Players { get; private set; } = new List<PlayerControl>();
     public bool IsReadyToGoNext { get; private set; } = false;
     public bool AllPlayersReady { get; private set; } = false;
 
-    public void AddPlayer(Player player)
+    public SendOptions SendOptions { get; } = new SendOptions { Reliability = true };
+    public RaiseEventOptions RaiseEventOptions { get; } = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
+
+    public void AddPlayer(PlayerControl player)
     {
         if (Players.Contains(player))
             return;
@@ -20,12 +25,12 @@ public class Controller : MonoBehaviour
         Players.Add(player);
     }
 
-    public void AddRequestOfMat(int price, int mat, Player player)
+    public void AddRequestOfMat(int price, int mat, PlayerControl player)
     {
         game.State.AddRequestOfMat(price, mat, player.Director);
     }
 
-    public void AddRequestOfProd(int price, int prod, Player player)
+    public void AddRequestOfProd(int price, int prod, PlayerControl player)
     {
         game.State.AddRequestOfProd(price, prod, player.Director);
     }
@@ -33,23 +38,24 @@ public class Controller : MonoBehaviour
     public void InitGame()
     {
         List<Director> directors = new List<Director>();
-        foreach(Player player in Players)
+        foreach(PlayerControl player in Players)
             directors.Add(player.Director);
         game = new Management.Management(directors);
         IsReadyToGoNext = false;
         StartCoroutine(WaitForAllReady(GoNext));
     }
-
+    
     public void GoNext()
     {
         IsReadyToGoNext = true;
         game.NextState();
+        PhotonNetwork.RaiseEvent(01, game.State.Bank.PriceLevel, RaiseEventOptions, SendOptions);
     }
 
     public IEnumerator WaitForAllReady(Action action)
     {
         AllPlayersReady = false;
-        foreach (Player player in Players)
+        foreach (PlayerControl player in Players)
         {
             if (!player.Director.IsBankrupt)
                 StartCoroutine(player.WaitForReady());
@@ -74,20 +80,16 @@ public class Controller : MonoBehaviour
         action();
     }
 
-    public void Start()
-    {
-        InitGame();
-    }
-
     public void EndGame()
     {
         Debug.Log("End");
+        PhotonNetwork.LeaveRoom();
         //Application.Quit();
     }
 
     public void Update()
     {
-        if (game == null)
+        if (game == null || !PhotonNetwork.IsMasterClient)
             return;
         if (IsReadyToGoNext && AllPlayersReady)
         {
@@ -98,10 +100,11 @@ public class Controller : MonoBehaviour
                 //changed fabrics, became bankrupts...
                 if (game.Alive <= 1)
                 {
+                    PhotonNetwork.RaiseEvent(2, null, RaiseEventOptions, SendOptions);
                     EndGame();
                     return;
                 }
-                StartCoroutine(WaitForAllReady(GoNext));
+                StartCoroutine(WaitForTime(GoNext, 1f));
             } else if (game.State.CurrentState == GameState.UpdateMarket)
             {
                 //update DemandOffer
@@ -118,9 +121,35 @@ public class Controller : MonoBehaviour
             {
                 //wait for requests
                 StartCoroutine(WaitForAllReady(GoNext));
+            } else if (game.State.CurrentState == GameState.BuildUpgrade)
+            {
+                //wait for upgade
+                StartCoroutine(WaitForAllReady(GoNext));
             }
         }
     }
 
+    public void OnEvent(EventData photonEvent)
+    {
+        switch (photonEvent.Code)
+        {
+            case 1:
+                game.NextState();
+                game.State.Bank.SetNewPriceLevel((int)photonEvent.CustomData, game.Alive);
+                break;
+            case 2:
+                EndGame();
+                break;
+        }
+    }
 
+    public void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
+    }
 }

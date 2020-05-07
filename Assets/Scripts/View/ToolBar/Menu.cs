@@ -9,14 +9,13 @@ public class Menu : MonoBehaviour
     public GameObject MenuBuntton;
     public GameObject ReadyButton;
     public GameObject MenuCanvas;
-    public GameManager manager;
     public static bool isPaused = false;
     [SerializeField]
-    private float TimeDelay = 0f;
+    private float TimeDelay = 1f;
 
     public SwitchCanvas Switcher;
 
-    private GameObject CanvasHolder = null;
+    private GameObject CanvasHolder = null; 
 
     public void Clicked()
     {
@@ -49,6 +48,6 @@ public class Menu : MonoBehaviour
     public void Exit()
     {
         Time.timeScale = 1f;
-        manager.Leave();
+        Photon.Pun.PhotonNetwork.LeaveRoom();
     }
 }

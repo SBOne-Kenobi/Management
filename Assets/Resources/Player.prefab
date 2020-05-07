@@ -90,6 +90,7 @@ GameObject:
   - component: {fileID: 4074524601689797901}
   - component: {fileID: 4074524601689797900}
   - component: {fileID: -3730902115981889979}
+  - component: {fileID: 3672489340047885382}
   - component: {fileID: 3201049783714092881}
   - component: {fileID: 1595377526733399827}
   m_Layer: 5
@@ -197,6 +198,28 @@ MonoBehaviour:
     m_DisabledTrigger: Disabled
   m_Interactable: 1
   m_TargetGraphic: {fileID: 4074524601689797900}
+--- !u!114 &3672489340047885382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4074524601689797906}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 3201049783714092881}
+  viewIdField: 0
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!114 &3201049783714092881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -225,7 +248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   InfoPanel: {fileID: 4640051974561903895}
   Name: {fileID: 4074524602446236762}
-  player: {fileID: 3201049783714092881}
+  Player: {fileID: 3201049783714092881}
   PlayerCanvasPrefab: {fileID: 7522606972876925607, guid: 80b25607e8201b2459351a9971051fed,
     type: 3}
 --- !u!1 &4074524602446236762
