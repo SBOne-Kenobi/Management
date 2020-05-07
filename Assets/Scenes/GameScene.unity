@@ -804,7 +804,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 423404504}
         m_MethodName: MakeRequest
         m_Mode: 1
         m_Arguments:
@@ -814,7 +814,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 0
+        m_CallState: 2
       - m_Target: {fileID: 1751092899}
         m_MethodName: GoCommon
         m_Mode: 1
@@ -959,7 +959,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 423404504}
         m_MethodName: FixPrice
         m_Mode: 1
         m_Arguments:
@@ -2122,6 +2122,7 @@ GameObject:
   - component: {fileID: 842824293}
   - component: {fileID: 842824292}
   - component: {fileID: 842824294}
+  - component: {fileID: 842824295}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -2201,6 +2202,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f26187b76ccbf940995f346a7ae3361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &842824295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 842824290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ObservedComponentsFoldoutOpen: 1
+  Group: 0
+  prefixField: -1
+  Synchronization: 3
+  OwnershipTransfer: 0
+  ObservedComponents:
+  - {fileID: 842824294}
+  viewIdField: 1
+  InstantiationId: 0
+  isRuntimeInstantiated: 0
 --- !u!1 &917946236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2595,7 +2618,7 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 423404504}
         m_MethodName: FixPrice
         m_Mode: 1
         m_Arguments:

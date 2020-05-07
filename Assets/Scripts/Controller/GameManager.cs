@@ -6,8 +6,9 @@ using UnityEngine.SceneManagement;
 using Photon.Realtime;
 using System.Linq;
 using UnityEngine.UI;
+using ExitGames.Client.Photon;
 
-public class GameManager : MonoBehaviourPunCallbacks
+public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
 {
 
     public List<PlayerControl> Players => GetComponent<Controller>().Players;
@@ -60,7 +61,13 @@ public class GameManager : MonoBehaviourPunCallbacks
         PhotonNetwork.CurrentRoom.IsOpen = false;
         Game.SetActive(true);
         Lobby.SetActive(false);
-        GetComponent<Controller>().InitGame();
+        if (PhotonNetwork.IsMasterClient)
+        {
+            GetComponent<Controller>().InitGame();
+            PhotonNetwork.RaiseEvent(0, null, 
+                new RaiseEventOptions { Receivers = ReceiverGroup.Others }, 
+                new SendOptions { Reliability = true });
+        }
     }
 
     public override void OnLeftRoom()
@@ -89,5 +96,15 @@ public class GameManager : MonoBehaviourPunCallbacks
     public void Leave()
     {
         PhotonNetwork.LeaveRoom();
+    }
+
+    public void OnEvent(EventData photonEvent)
+    {
+        switch (photonEvent.Code)
+        {
+            case 0:
+                StartGame();
+                break;
+        }
     }
 }

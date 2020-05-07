@@ -26,9 +26,9 @@ public class PlayerItem : MonoBehaviour, IPunObservable
     void Update()
     {
         if (IsReady)
-            Image.color = Color.green;
+            Image.color = new Color(0, 1f, 0, 0.7f);
         else
-            Image.color = Color.red;
+            Image.color = new Color(1f, 0.03f, 0, 0.7f);
     }
 
     public void GetReady()

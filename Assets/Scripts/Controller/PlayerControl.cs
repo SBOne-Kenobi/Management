@@ -14,8 +14,6 @@ public class PlayerControl : MonoBehaviour, IPunObservable
     public bool Mutable { get; private set; } = false;
     public string Name = "Default";
 
-    private ListPlayer ListPlayer;
-
     public void Start()
     {
         var parent = FindObjectOfType<GameManager>().Game.transform.Find("CommonCanvas");
