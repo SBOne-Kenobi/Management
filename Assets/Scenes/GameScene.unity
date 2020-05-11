@@ -2122,7 +2122,6 @@ GameObject:
   - component: {fileID: 842824293}
   - component: {fileID: 842824292}
   - component: {fileID: 842824294}
-  - component: {fileID: 842824295}
   m_Layer: 5
   m_Name: Timer
   m_TagString: Untagged
@@ -2202,28 +2201,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f26187b76ccbf940995f346a7ae3361, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &842824295
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 842824290}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  ObservedComponents:
-  - {fileID: 842824294}
-  viewIdField: 1
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!1 &917946236
 GameObject:
   m_ObjectHideFlags: 0
@@ -2312,6 +2289,7 @@ GameObject:
   - component: {fileID: 923471474}
   - component: {fileID: 923471475}
   - component: {fileID: 923471476}
+  - component: {fileID: 923471477}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2364,6 +2342,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 57c783a8d6fb7d442b9bf79261c04c68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MinePlayer: {fileID: 0}
+--- !u!114 &923471477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 923471473}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0aa518a6b628821408aae6215176156a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &937596654

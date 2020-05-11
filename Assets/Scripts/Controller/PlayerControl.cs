@@ -10,14 +10,14 @@ public class PlayerControl : MonoBehaviour, IPunObservable
     public Director Director { get; private set; } = new Director();
     public PhotonView PhotonView { get; private set; }
     public int Order = 0;
-    public bool IsReady { get; private set; } = false;
-    public bool Mutable { get; private set; } = false;
+    public bool IsReady { get; private set; } = true;
+    public bool Mutable { get; set; } = false;
     public string Name = "Default";
+    private Controller controller;
 
     public void Start()
     {
         var parent = FindObjectOfType<GameManager>().Game.transform.Find("CommonCanvas");
-
         transform.SetParent(parent);
 
         PhotonView = GetComponent<PhotonView>();
@@ -25,7 +25,8 @@ public class PlayerControl : MonoBehaviour, IPunObservable
         if (!PhotonView.IsMine)
             GetComponent<Image>().color = Color.red;
 
-        FindObjectOfType<Controller>().AddPlayer(this);
+        controller = FindObjectOfType<Controller>();
+        controller.AddPlayer(this);
     }
 
     public void GetReady()
@@ -36,7 +37,6 @@ public class PlayerControl : MonoBehaviour, IPunObservable
 
     public IEnumerator WaitForReady()
     {
-        Mutable = true;
         IsReady = false;
         while (!IsReady)
         {

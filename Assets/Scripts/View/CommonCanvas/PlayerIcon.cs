@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
@@ -26,6 +27,9 @@ public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         PlayerCanvas.transform.Find("PlayerInfo").GetComponent<PlayerInfo>().player = Player;
         PlayerCanvas.GetComponent<PlayerCanvas>().player = Player;
         PlayerCanvas.SetActive(false);
+        InfoPanel.SetActive(false);
+        Name.SetActive(true);
+        Name.GetComponent<Text>().text = Player.PhotonView.Owner.NickName;
     }
 
     public void OnPointerClick(PointerEventData eventData)

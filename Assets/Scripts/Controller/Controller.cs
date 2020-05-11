@@ -18,6 +18,8 @@ public class Controller : MonoBehaviour, IOnEventCallback
     public SendOptions SendOptions { get; } = new SendOptions { Reliability = true };
     public RaiseEventOptions RaiseEventOptions { get; } = new RaiseEventOptions { Receivers = ReceiverGroup.Others };
 
+    public PlayerControl MinePlayer;
+
     public void AddPlayer(PlayerControl player)
     {
         if (Players.Contains(player))
@@ -43,11 +45,17 @@ public class Controller : MonoBehaviour, IOnEventCallback
 
     public void ExecuteGame()
     {
+        MinePlayer = Players.First(p => p.PhotonView.IsMine);
         List<Director> directors = new List<Director>();
-        foreach (PlayerControl player in Players.OrderBy(p => p.Order))
+        Players.Sort((a, b) => { return a.Order.CompareTo(b.Order); });
+
+        GetComponent<SpawnerPlayers>().SpawnPlayers(Players);
+
+        foreach (PlayerControl player in Players)
             directors.Add(player.Director);
         game = new Management.Management(directors);
-        GoNext();
+        if (PhotonNetwork.IsMasterClient)
+            StartCoroutine(WaitForAllReady(GoNextServer));
     }
 
     int PrevNum = 1;
@@ -74,23 +82,45 @@ public class Controller : MonoBehaviour, IOnEventCallback
         ExecuteGame();
     }
     
-    public void GoNext()
+    public void GoNextServer()
     {
         IsReadyToGoNext = true;
         game.NextState();
         PhotonNetwork.RaiseEvent(01, game.State.Bank.PriceLevel, RaiseEventOptions, SendOptions);
     }
 
+    public void GoNextClient(int price_level)
+    {
+        IsReadyToGoNext = true;
+        AllPlayersReady = true;
+        game.NextState();
+        game.State.Bank.SetNewPriceLevel(price_level, game.Alive);
+    }
+
     public IEnumerator WaitForAllReady(Action action)
     {
         AllPlayersReady = false;
-        foreach (PlayerControl player in Players)
-        {
-            if (!player.Director.IsBankrupt)
-                StartCoroutine(player.WaitForReady());
-        }
+        PhotonNetwork.RaiseEvent(06, null, RaiseEventOptions, SendOptions);
+
+        if (!MinePlayer.Director.IsBankrupt)
+            StartCoroutine(MinePlayer.WaitForReady());
         
+
         bool isReady = false;
+
+        //waiting for recieve all players
+        while (!isReady)
+        {
+            isReady = true;
+            Players.ForEach(p => { if (p.IsReady && !p.Director.IsBankrupt) isReady = false; });
+            if (!isReady)
+                yield return null;
+        }
+        PhotonNetwork.RaiseEvent(07, null, RaiseEventOptions, SendOptions);
+        if (!MinePlayer.Director.IsBankrupt)
+            MinePlayer.Mutable = true;
+
+        isReady = false;
         while (!isReady)
         {
             isReady = true;
@@ -111,57 +141,90 @@ public class Controller : MonoBehaviour, IOnEventCallback
 
     void CheckEnd()
     {
+        if (game == null)
+            return;
         if (game.Alive <= 1)
-        {
-            PhotonNetwork.RaiseEvent(2, null, RaiseEventOptions, SendOptions);
-            EndGame();
-            //return true;
-        }
-        //return false;
+            StartCoroutine(EndGame());
     }
 
-    public void EndGame()
+    
+
+    IEnumerator EndGame()
     {
         Debug.Log("End");
-        StopAllCoroutines();
-        PhotonNetwork.Disconnect(); 
-        //Application.Quit();
+        foreach (PlayerControl player in Players)
+            if (!player.PhotonView.IsMine)
+                PhotonNetwork.CloseConnection(player.PhotonView.Owner);
+        while (Players.Count(p => !p.PhotonView.IsMine) > 0)
+            yield return null;
+        PhotonNetwork.Disconnect();
     }
 
     public void Update()
     {
-        if (game == null || !PhotonNetwork.IsMasterClient)
+        if (game == null)
             return;
-        CheckEnd();
         if (IsReadyToGoNext && AllPlayersReady)
         {
             IsReadyToGoNext = false;
             //begin new state
-            if (game.State.CurrentState == GameState.FixCosts)
+            if (PhotonNetwork.IsMasterClient)
             {
-                //changed fabrics, became bankrupts...
-                StartCoroutine(WaitForTime(GoNext, 1f));
-            } else if (game.State.CurrentState == GameState.UpdateMarket)
-            {
-                //update DemandOffer
-                StartCoroutine(WaitForTime(GoNext, 1f));
-            } else if (game.State.CurrentState == GameState.MatRequest)
-            {
-                //start wait for requests
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State.CurrentState == GameState.Production)
-            {
-                //wait for production
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State.CurrentState == GameState.ProdRequest)
-            {
-                //wait for requests
-                StartCoroutine(WaitForAllReady(GoNext));
-            } else if (game.State.CurrentState == GameState.BuildUpgrade)
-            {
-                //wait for upgade
-                StartCoroutine(WaitForAllReady(GoNext));
+                CheckEnd();
+                if (game.State.CurrentState == GameState.FixCosts)
+                {
+                    //changed fabrics, became bankrupts...
+                    StartCoroutine(WaitForTime(GoNextServer, 1f));
+                }
+                else if (game.State.CurrentState == GameState.UpdateMarket)
+                {
+                    //update DemandOffer
+                    StartCoroutine(WaitForTime(GoNextServer, 1f));
+                }
+                else if (game.State.CurrentState == GameState.MatRequest)
+                {
+                    //start wait for requests
+                    StartCoroutine(WaitForAllReady(GoNextServer));
+                }
+                else if (game.State.CurrentState == GameState.Production)
+                {
+                    //wait for production
+                    StartCoroutine(WaitForAllReady(GoNextServer));
+                }
+                else if (game.State.CurrentState == GameState.ProdRequest)
+                {
+                    //wait for requests
+                    StartCoroutine(WaitForAllReady(GoNextServer));
+                }
+                else if (game.State.CurrentState == GameState.BuildUpgrade)
+                {
+                    //wait for upgade
+                    StartCoroutine(WaitForAllReady(GoNextServer));
+                }
             }
+        }
+    }
+
+    public void SendFabricState(byte id, int actorNumber, int pos, int money)
+    {
+        PhotonNetwork.RaiseEvent(id, new int[] { actorNumber, pos, money }, RaiseEventOptions, SendOptions);
+    }
+
+    void UpdateFabricState(byte id, int actorNumber, int pos, int money)
+    {
+        Director director = Players.First(p => p.PhotonView.Owner.ActorNumber == actorNumber).Director;
+        director.Money = money;
+        switch(id)
+        {
+            case 21: //Buy
+                director.BuyFabric(pos);
+                break;
+            case 22: //Sell
+                director.SellFabric(pos);
+                break;
+            case 23: //Upgrade
+                director.UpgradeFabric(pos);
+                break;
         }
     }
 
@@ -170,10 +233,9 @@ public class Controller : MonoBehaviour, IOnEventCallback
         switch (photonEvent.Code)
         {
             case 1:
-                game.NextState();
-                game.State.Bank.SetNewPriceLevel((int)photonEvent.CustomData, game.Alive);
+                GoNextClient((int)photonEvent.CustomData);
                 break;
-            case 2:
+            case 2: //unused
                 EndGame();
                 break;
             case 3:
@@ -181,15 +243,33 @@ public class Controller : MonoBehaviour, IOnEventCallback
                 ExecuteGame();
                 break;
             case 4:
-                int[] info4 = (int[])photonEvent.CustomData;
-                PlayerControl player4 = Players.First(p => p.PhotonView.Owner.ActorNumber == info4[2]);
-                AddRequestOfMat(info4[0], info4[1], player4);
+                int[] info = (int[])photonEvent.CustomData;
+                PlayerControl player = Players.First(p => p.PhotonView.Owner.ActorNumber == info[2]);
+                AddRequestOfMat(info[0], info[1], player);
                 break;
             case 5:
-                int[] info5 = (int[])photonEvent.CustomData;
-                PlayerControl player5 = Players.First(p => p.PhotonView.Owner.ActorNumber == info5[2]);
-                AddRequestOfProd(info5[0], info5[1], player5);
+                info = (int[])photonEvent.CustomData;
+                player = Players.First(p => p.PhotonView.Owner.ActorNumber == info[2]);
+                AddRequestOfProd(info[0], info[1], player);
                 break;
+            case 6:
+                AllPlayersReady = false;
+                if (!MinePlayer.Director.IsBankrupt)
+                    StartCoroutine(MinePlayer.WaitForReady());
+                break;
+            case 7:
+                if (!MinePlayer.Director.IsBankrupt)
+                    MinePlayer.Mutable = true;
+                break;
+        }
+        if (photonEvent.Code >= 21 && photonEvent.Code < 30)
+        {
+            int[] info = (int[])photonEvent.CustomData;
+            int actorNumber = info[0];
+            int pos = info[1];
+            int money = info[2];
+
+            UpdateFabricState(photonEvent.Code, actorNumber, pos, money);
         }
     }
 

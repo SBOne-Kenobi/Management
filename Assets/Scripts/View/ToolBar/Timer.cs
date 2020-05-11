@@ -4,8 +4,10 @@ using UnityEngine;
 using UnityEngine.UI;
 using Management;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
 
-public class Timer : MonoBehaviour, IPunObservable
+public class Timer : MonoBehaviour, IOnEventCallback
 {
     float CurrentTime = 0;
     Controller controller;
@@ -23,17 +25,20 @@ public class Timer : MonoBehaviour, IPunObservable
         {
             CurrentTime = time;
             GameState state = controller.game.State.CurrentState;
+            var last_tick = PhotonNetwork.Time;
             while (CurrentTime > 0 && state == controller.game.State.CurrentState)
             {
                 yield return null;
-                CurrentTime -= Time.deltaTime;
+                var now = PhotonNetwork.Time;
+                CurrentTime -= (float)(now - last_tick);
+                last_tick = now;
             }
             CurrentTime = 0f;
             if (state == controller.game.State.CurrentState)
             {
+                PhotonNetwork.RaiseEvent(12, null, controller.RaiseEventOptions, controller.SendOptions);
                 switcher.GoCommon();
-                foreach (PlayerControl player in controller.Players)
-                    player.GetReady();
+                controller.MinePlayer.GetReady();
             }
         }
     }
@@ -62,6 +67,7 @@ public class Timer : MonoBehaviour, IPunObservable
                 }
                 StartCoroutine(StartTimer(AimTime));
             }
+            PhotonNetwork.RaiseEvent(11, CurrentTime, controller.RaiseEventOptions, controller.SendOptions);
         }
         int m, s;
         m = Mathf.CeilToInt(CurrentTime) / 60;
@@ -71,15 +77,27 @@ public class Timer : MonoBehaviour, IPunObservable
         GetComponent<Text>().text = minutes + ":" + secs;
     }
 
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    public void OnEvent(EventData photonEvent)
     {
-        if (stream.IsWriting)
+        switch(photonEvent.Code)
         {
-            stream.SendNext(CurrentTime);
+            case 11:
+                CurrentTime = (float)photonEvent.CustomData;
+                break;
+            case 12:
+                switcher.GoCommon();
+                controller.MinePlayer.GetReady();
+                break;
         }
-        else
-        {
-            CurrentTime = (float) stream.ReceiveNext();
-        }
+    }
+
+    public void OnEnable()
+    {
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void OnDisable()
+    {
+        PhotonNetwork.RemoveCallbackTarget(this);
     }
 }

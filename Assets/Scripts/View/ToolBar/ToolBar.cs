@@ -17,7 +17,11 @@ public class ToolBar : PlayerInfo
         base.Awake();
         Timer = transform.Find("Timer");
         ReadyButton = transform.Find("ReadyButton");
-        player = controller.Players.First(p => p.PhotonView.IsMine);
+    }
+
+    private void Start()
+    {
+        player = controller.MinePlayer;
     }
 
     override protected void Update()

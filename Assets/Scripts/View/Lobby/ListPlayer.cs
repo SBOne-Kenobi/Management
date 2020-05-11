@@ -14,6 +14,7 @@ public class ListPlayer : MonoBehaviour
         rt.anchorMax = new Vector2(1f, 1f - (index / 8f));
         rt.offsetMax = new Vector2(-1, -3);
         rt.offsetMin = new Vector2(1, 3);
+        rt.localScale = new Vector3(1, 1, 1);
     }
 
     void FixRectNew(RectTransform rt)
