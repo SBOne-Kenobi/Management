@@ -9,7 +9,8 @@ namespace Management
         public int StartUpgradeTime { get; } = 9;
         override public int MaxMat { get; } = 1;
         override public int BuildPrice { get; } = 5000;
-        override protected int[] _proc_price { get; } = { 0, 2000 };
+        override protected int[] _process_price { get; } = { 0, 2000 };
+        public override int TaxPrice { get; } = 1000;
 
         public int UpgradeTime { get; private set; }
 
@@ -30,7 +31,8 @@ namespace Management
 
         public void Upgrade()
         {
-            Owner.ExchangeFabric(this, new AutoFabric(Owner, 0));
+            Owner.ExchangeFabric(this, new AutomatedFabric(Owner, 0));
+            Remove();
         }
 
         public override void DecreaseTiming()

@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ToolBar : PlayerInfo
 {
-    public Switcher switcher;
     private Transform Timer;
     private Transform ReadyButton;
+
+    [SerializeField]
+    private Controller controller;
 
     override protected void Awake()
     {
@@ -16,15 +19,19 @@ public class ToolBar : PlayerInfo
         ReadyButton = transform.Find("ReadyButton");
     }
 
+    private void Start()
+    {
+        player = controller.MinePlayer;
+    }
+
     override protected void Update()
     {
-        player = switcher.GetPlayer();
         base.Update();
         ReadyButton.GetComponent<Button>().interactable = player.Mutable;
     }
 
     public void GetReady()
     {
-        switcher.GetPlayer().GetReady();
+        player.GetReady();
     }
 }

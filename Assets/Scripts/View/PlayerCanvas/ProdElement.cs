@@ -30,7 +30,7 @@ public abstract class ProdElement : MonoBehaviour
         }
         switch(mode)
         {
-            case ProductionMode.PROD:
+            case ProductionMode.PRODUCTION:
                 SetProdMode(owner);
                 break;
             case ProductionMode.BUY:

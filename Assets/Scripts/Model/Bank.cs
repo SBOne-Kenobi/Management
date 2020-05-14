@@ -106,11 +106,16 @@ namespace Management
         private List<DemandOffer> _report = new List<DemandOffer>();
         public List<DemandOffer> Report => _report;
 
+        public void SetStocks(int N)
+        {
+            _product = (int)Math.Floor(PriceLevelInfo[PriceLevel].UProd * N);
+            _materials = (int)Math.Floor(PriceLevelInfo[PriceLevel].UMat * N);
+        }
+
         public Bank(int N)
         {
             _priceLevel = 2;
-            _product = (int)Math.Floor(PriceLevelInfo[PriceLevel].UProd * N);
-            _materials = (int)Math.Floor(PriceLevelInfo[PriceLevel].UMat * N);
+            SetStocks(N);
         }
 
         public void SetNewPriceLevel(int N)
@@ -125,8 +130,13 @@ namespace Management
                 }
                 Rem -= ProbOfPriceChange[_priceLevel, i];
             }
-            _materials = (int)Math.Floor(PriceLevelInfo[_priceLevel].UMat * N);
-            _product = (int)Math.Floor(PriceLevelInfo[_priceLevel].UProd * N);
+            SetStocks(N);
+        }
+
+        public void SetNewPriceLevel(int priceLevel, int N)
+        {
+            _priceLevel = priceLevel;
+            SetStocks(N);
         }
 
         public DemandOffer GetInfo => PriceLevelInfo[_priceLevel];

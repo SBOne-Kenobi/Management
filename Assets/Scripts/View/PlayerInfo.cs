@@ -9,7 +9,7 @@ public class PlayerInfo : MonoBehaviour
     public Transform Mat = null;
     public Transform Mon = null;
     public Transform PlayerName = null;
-    public Player player = null;
+    public PlayerControl player = null;
 
     virtual protected void Awake()
     {

@@ -2,11 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Management;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
+using Photon.Pun;
 
 public class Cell : ProdElement
 {
+    public PlayerControl player;
     public Director director;
+    private Controller controller;
     public int pos;
+
     public Fabric Fabric
     {
         get
@@ -17,6 +23,11 @@ public class Cell : ProdElement
         }
     }
     public GameObject Production, Upgrade, Buy;
+
+    private void Start()
+    {
+        controller = FindObjectOfType<Controller>();
+    }
 
     protected override void SetBuyMode(bool owner)
     {
@@ -45,21 +56,35 @@ public class Cell : ProdElement
         Upgrade.SetActive(tof);
     }
 
+    void SendMessage(byte id)
+    {
+        controller.SendFabricState(id, player.PhotonView.Owner.ActorNumber, pos, director.Money);
+    }
+
     public void BuyFabric()
     {
         if (director != null)
+        {
+            SendMessage(21);
             director.BuyFabric(pos);
+        }
     }
 
     public void SellFabric()
     {
         if (director != null)
+        {
+            SendMessage(22);
             director.SellFabric(pos);
+        }
     }
 
     public void UpgradeFabric()
     {
         if (director != null)
+        {
+            SendMessage(23);
             director.UpgradeFabric(pos);
+        }
     }
 }

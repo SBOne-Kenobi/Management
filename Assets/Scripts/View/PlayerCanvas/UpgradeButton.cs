@@ -7,7 +7,7 @@ public class UpgradeButton : ProdElement
     protected override bool NeededState()
     {
         var par = GetComponentInParent<PlayerCanvas>().Controller.game;
-        return par != null && par.State.CurrentState == Management.GameState.FixCosts;
+        return par != null && par.State.CurrentState == Management.GameState.BuildUpgrade;
     }
 
     protected override void SetBuyMode(bool owner)

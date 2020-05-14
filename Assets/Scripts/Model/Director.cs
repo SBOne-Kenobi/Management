@@ -5,11 +5,11 @@ namespace Management
 
     public class Director : IWorldObject
     {
-        public int Materials { get; private set; }
+        public int Materials { get; set; }
 
-        public int Product { get; private set; }
+        public int Product { get; set; }
 
-        public int Money { get; private set; }
+        public int Money { get; set; }
 
         public Fabric[] Fabrics { get; set; }
 
@@ -34,6 +34,11 @@ namespace Management
             }
         }
 
+        public bool HasFabric(int index)
+        {
+            return index >= 0 && Fabrics[index] != null;
+        }
+
         public Director()
         {
             //start kit
@@ -42,17 +47,15 @@ namespace Management
             Product = 2;
             Money = 10000;
             _bankrupt = false;
-            Fabrics = new Fabric[8];
+            Fabrics = new Fabric[6];
             _fab_fix_costs = 0;
             for (int i = 0; i < 2; i++)
                 Fabrics[i] = new SimpleFabric(this, 0);
-            for (int i = 2; i < Fabrics.Length; i++)
-                Fabrics[i] = null;
         }
 
         public void SellFabric(int index)
         {
-            if (Fabrics[index] != null)
+            if (HasFabric(index))
             {
                 Money += Fabrics[index].BuildPrice;
                 Fabrics[index].Remove();
@@ -61,7 +64,7 @@ namespace Management
 
         public void BuyFabric(int index)
         {
-            if (Fabrics[index] == null)
+            if (!HasFabric(index))
             {
                 Fabrics[index] = new SimpleFabric(this);
                 if (Money >= Fabrics[index].BuildPrice)
@@ -73,17 +76,14 @@ namespace Management
 
         public void RemoveFabric(Fabric fab)
         {
-            for (int i = 0; i < Fabrics.Length; i++)
-                if (Fabrics[i] == fab)
-                {
-                    Fabrics[i] = null;
-                    break;
-                }
+            int index = GetIndex(fab);
+            if (HasFabric(index))
+                Fabrics[index] = null;
         }
 
         public void UpgradeFabric(int index)
         {
-            if (Fabrics[index] != null)
+            if (HasFabric(index))
             {
                 if (Fabrics[index] is SimpleFabric)
                 {
@@ -98,10 +98,10 @@ namespace Management
 
         public void ExchangeFabric(Fabric oldFabric, Fabric newFabric)
         {
-             readonly int oldFaricIndex = GetIndex(oldFabric);
-             if (oldFaricIndex >= 0) {
-                  Fabrics[oldFaricIndex] = newFabric;
-             }
+            int oldFaricIndex = GetIndex(oldFabric);
+            if (HasFabric(oldFaricIndex)) {
+                Fabrics[oldFaricIndex] = newFabric;
+            }
         }
 
         public void MakeRequestOfMat(int price, int get)
@@ -155,33 +155,33 @@ namespace Management
 
         public bool AddMaterial(int index)
         {
-            if (Fabrics[index] == null)
+            if (!HasFabric(index))
                 return false;
-            bool ret = false;
+            bool added = false;
             Money += Fabrics[index].ProcPrice;
             if (Fabrics[index].AddMat())
             {
                 if (Money - Fabrics[index].ProcPrice >= 0)
-                    ret = true;
+                    added = true;
                 else
                     Fabrics[index].RemoveMat();
             }
             Money -= Fabrics[index].ProcPrice;
-            if (ret)
+            if (added)
                 Materials--;
-            return ret;
+            return added;
         }
 
         public bool RemoveMaterial(int index)
         {
-            if (Fabrics[index] == null)
+            if (!HasFabric(index))
                 return false;
             Money += Fabrics[index].ProcPrice;
-            bool ret = Fabrics[index].RemoveMat();
+            bool removed = Fabrics[index].RemoveMat();
             Money -= Fabrics[index].ProcPrice;
-            if (ret)
+            if (removed)
                 Materials++;
-            return ret;
+            return removed;
         }
 
         public void NextState(WorldState state)
@@ -214,12 +214,8 @@ namespace Management
             _fab_fix_costs = 0;
             foreach (Fabric fabric in Fabrics)
             {
-                if (fabric == null)
-                    continue;
-                if (fabric is SimpleFabric)
-                    _fab_fix_costs += 1000;
-                if (fabric is AutoFabric)
-                    _fab_fix_costs += 1500;
+                if (fabric != null)
+                  _fab_fix_costs += fabric.TaxPrice;
             }
         }
     }

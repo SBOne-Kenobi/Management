@@ -10,10 +10,12 @@ public class Menu : MonoBehaviour
     public GameObject ReadyButton;
     public GameObject MenuCanvas;
     public static bool isPaused = false;
+    [SerializeField]
+    private float TimeDelay = 1f;
 
     public SwitchCanvas Switcher;
 
-    private GameObject CanvasHolder = null;
+    private GameObject CanvasHolder = null; 
 
     public void Clicked()
     {
@@ -26,7 +28,7 @@ public class Menu : MonoBehaviour
         MenuBuntton.GetComponent<Button>().interactable = false;
         MenuCanvas.SetActive(true);
 
-        Time.timeScale = 0f;
+        Time.timeScale = TimeDelay;
 
         isPaused = true;
     }
@@ -45,6 +47,7 @@ public class Menu : MonoBehaviour
 
     public void Exit()
     {
-        Application.Quit();
+        Time.timeScale = 1f;
+        Photon.Pun.PhotonNetwork.LeaveRoom();
     }
 }

@@ -4,24 +4,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using Management;
+using System.Linq;
 
 public class Request : MonoBehaviour
 {
 
     private Controller controller;
-    public Switcher switcher;
     public GameObject input;
-    public GameObject button;
+    private PlayerControl Player;
 
     private void Awake()
     {
         controller = FindObjectOfType<Controller>();
+        Player = controller.Players.First(p => p.PhotonView.IsMine);
     }
 
     void Start()
     {
         input.SetActive(false);
-        button.SetActive(true);
     }
 
     public void FixPrice()
@@ -48,11 +48,11 @@ public class Request : MonoBehaviour
 
         if (controller.game.State.CurrentState == GameState.ProdRequest)
         {
-            am = Math.Min(am, switcher.GetPlayer().Director.Product);
+            am = Math.Min(am, Player.Director.Product);
         }
         else if (controller.game.State.CurrentState == GameState.MatRequest)
         {
-            pr = Math.Min(pr, switcher.GetPlayer().Director.Money / Math.Max(am, 1));
+            pr = Math.Min(pr, Player.Director.Money / Math.Max(am, 1));
         }
         price.GetComponent<InputField>().text = pr.ToString();
         amount.GetComponent<InputField>().text = am.ToString();
@@ -66,11 +66,11 @@ public class Request : MonoBehaviour
                 controller.game.State.CurrentState == GameState.ProdRequest);
         }
     }
+
     void Update()
     {
-        if (!switcher.GetPlayer().IsReady && TimeToDo)
+        if (!Player.IsReady && TimeToDo)
         {
-            button.SetActive(false);
             input.SetActive(true);
         }
         else
@@ -81,7 +81,6 @@ public class Request : MonoBehaviour
                 input.transform.Find("InputPrice").GetComponent<InputField>().text = "";
             }
             input.SetActive(false);
-            button.SetActive(true);
         }
     }
 
@@ -95,11 +94,11 @@ public class Request : MonoBehaviour
             int am = Convert.ToInt32("0" + amount.GetComponent<InputField>().text);
             if (controller.game.State.CurrentState == GameState.MatRequest)
             {
-                controller.AddRequestOfMat(pr, am, switcher.GetPlayer());
+                controller.AddRequestOfMat(pr, am, Player);
             }
             else
             {
-                controller.AddRequestOfProd(pr, am, switcher.GetPlayer());
+                controller.AddRequestOfProd(pr, am, Player);
             }
         }
     }

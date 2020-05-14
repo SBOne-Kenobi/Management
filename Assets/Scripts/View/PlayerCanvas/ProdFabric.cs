@@ -34,7 +34,7 @@ public class ProdFabric : MonoBehaviour
             Progress.SetActive(true);
             Progress.GetComponent<Progress>().UpdateCur(Fabric.StartBuildTime - Fabric.BuildTime, Fabric.StartBuildTime);
         }
-        else if (Fabric is AutoFabric)
+        else if (Fabric is AutomatedFabric)
         {
             Building.SetActive(false);
             Simple.SetActive(false);

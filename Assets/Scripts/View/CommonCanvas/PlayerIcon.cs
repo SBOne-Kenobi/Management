@@ -1,31 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IPointerClickHandler
 {
-    public GameObject InfoPanel;
-    public GameObject Name;
-    public Player player;
+    [SerializeField]
+    private GameObject InfoPanel;
+
+    [SerializeField]
+    private GameObject Name;
+
+    [SerializeField]
+    private PlayerControl Player;
+    
     private GameObject PlayerCanvas;
-    public GameObject PlayerCanvasPrefab;
-    private SwitchCanvas switchCanvas;
+
+    [SerializeField]
+    private GameObject PlayerCanvasPrefab;
+
+    private SwitchCanvas SwitchCanvas;
 
     void Start()
     {
-        switchCanvas = FindObjectOfType<SwitchCanvas>();
+        SwitchCanvas = FindObjectOfType<SwitchCanvas>();
         PlayerCanvas = Instantiate(PlayerCanvasPrefab);
-        PlayerCanvas.transform.Find("PlayerInfo").GetComponent<PlayerInfo>().player = player;
-        PlayerCanvas.GetComponent<PlayerCanvas>().player = player;
+        PlayerCanvas.transform.Find("PlayerInfo").GetComponent<PlayerInfo>().player = Player;
+        PlayerCanvas.GetComponent<PlayerCanvas>().player = Player;
         PlayerCanvas.SetActive(false);
+        InfoPanel.SetActive(false);
+        Name.SetActive(true);
+        Name.GetComponent<Text>().text = Player.PhotonView.Owner.NickName;
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         OnPointerExit(eventData);
-        switchCanvas.GoCanvas(PlayerCanvas);
+        SwitchCanvas.GoCanvas(PlayerCanvas);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -39,7 +49,4 @@ public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
         InfoPanel.SetActive(false);
         Name.SetActive(true);
     }
-
-
-
 }
