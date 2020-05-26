@@ -6,28 +6,29 @@ using UnityEngine.UI;
 
 public class ToolBar : PlayerInfo
 {
-    private Transform Timer;
     private Transform ReadyButton;
 
     [SerializeField]
-    private Controller controller;
+    private Controller Controller;
+    [SerializeField]
+    private GameObject FixCosts;
 
     override protected void Awake()
     {
         base.Awake();
-        Timer = transform.Find("Timer");
         ReadyButton = transform.Find("ReadyButton");
     }
 
     private void Start()
     {
-        player = controller.MinePlayer;
+        player = Controller.MinePlayer;
     }
 
     override protected void Update()
     {
         base.Update();
         ReadyButton.GetComponent<Button>().interactable = player.Mutable;
+        FixCosts.GetComponent<Text>().text = "Fix costs: " + player.Director.FixCosts;
     }
 
     public void GetReady()
