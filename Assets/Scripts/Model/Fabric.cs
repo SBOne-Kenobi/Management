@@ -6,30 +6,27 @@ namespace Management
 {
     public class Fabric : IWorldObject
     {
-        public static int StartBuildTime { get; }
-        protected Director Owner { get; private set; }
-        protected int Pos { get; private set; }
+        public virtual int StartBuildTime { get; }
+        public Director Owner { get; private set; }
 
         protected int _build_time;
         public int BuildTime => _build_time;
 
-        static public int MaxMat { get; }
+        virtual public int MaxMat { get; }
 
         protected int _current_mat;
         public int CurrentMat => _current_mat;
 
-        static public int BuildPrice { get; }
+        virtual public int BuildPrice { get; }
 
-        static protected int[] _proc_price { get; }
+        virtual protected int[] _proc_price { get; }
         public int ProcPrice => _proc_price[CurrentMat];
-        
+
         static public List<Fabric> Fabrics = new List<Fabric>();
 
-        public Fabric(Director owner, int pos, int build_time)
+        public Fabric(Director owner, int build_time)
         {
             Owner = owner;
-            Pos = pos;
-            owner.Fabrics[pos] = this;
             _current_mat = 0;
             _build_time = build_time;
             Fabrics.Add(this);
@@ -75,7 +72,7 @@ namespace Management
 
         public void Remove()
         {
-            Owner.Fabrics[Pos] = null;
+            Owner.RemoveFabric(this);
             Fabrics.Remove(this);
         }
 
