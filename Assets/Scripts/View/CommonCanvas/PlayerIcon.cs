@@ -22,9 +22,11 @@ public class PlayerIcon : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
 
     void Start()
     {
+        var controller = FindObjectOfType<Controller>();
         SwitchCanvas = FindObjectOfType<SwitchCanvas>();
         PlayerCanvas = Instantiate(PlayerCanvasPrefab);
         PlayerCanvas.transform.Find("PlayerInfo").GetComponent<PlayerInfo>().player = Player;
+        PlayerCanvas.transform.Find("Visitor").GetComponent<PlayerInfo>().player = controller.MinePlayer;
         PlayerCanvas.GetComponent<PlayerCanvas>().player = Player;
         PlayerCanvas.SetActive(false);
         InfoPanel.SetActive(false);

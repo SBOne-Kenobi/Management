@@ -51,6 +51,17 @@ namespace Management
             _fab_fix_costs = 0;
             for (int i = 0; i < 2; i++)
                 Fabrics[i] = new SimpleFabric(this, 0);
+            UpdateFabCosts();
+        }
+
+        public int GetFixCostFabric(int index)
+        {
+            if (HasFabric(index))
+                if (Fabrics[index] is SimpleFabric)
+                    return 1000;
+                else
+                    return 1500;
+            return 0;
         }
 
         public void SellFabric(int index)
@@ -58,6 +69,7 @@ namespace Management
             if (HasFabric(index))
             {
                 Money += Fabrics[index].BuildPrice;
+                _fab_fix_costs -= GetFixCostFabric(index);
                 Fabrics[index].Remove();
             }
         }
@@ -68,7 +80,10 @@ namespace Management
             {
                 Fabrics[index] = new SimpleFabric(this);
                 if (Money >= Fabrics[index].BuildPrice)
+                {
                     Money -= Fabrics[index].BuildPrice;
+                    _fab_fix_costs += GetFixCostFabric(index);
+                }
                 else
                     Fabrics[index].Remove();
             }
@@ -118,7 +133,6 @@ namespace Management
 
         public bool GetFixedCosts()
         {
-            //magic constates (:
             if (_bankrupt)
                 return false;
             Money -= FixCosts;
@@ -212,11 +226,8 @@ namespace Management
         public void UpdateFabCosts()
         {
             _fab_fix_costs = 0;
-            foreach (Fabric fabric in Fabrics)
-            {
-                if (fabric != null)
-                  _fab_fix_costs += fabric.TaxPrice;
-            }
+            for (int i = 0; i < Fabrics.Length; i++)
+                _fab_fix_costs += GetFixCostFabric(i);
         }
     }
 }

@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
     {
         if (PhotonNetwork.IsMasterClient)
         {
-            bool AllReady = true;
+            bool AllReady = true && (PhotonNetwork.CurrentRoom.MaxPlayers == ListPlayer.List.Count);
             foreach (PlayerItem item in ListPlayer.List)
                 AllReady = AllReady && item.IsReady;
             StartButton.gameObject.SetActive(AllReady);
