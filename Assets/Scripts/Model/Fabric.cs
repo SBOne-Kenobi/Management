@@ -4,6 +4,7 @@ using Management;
 
 namespace Management
 {
+
     public class Fabric : IWorldObject
     {
         public virtual int StartBuildTime { get; }
@@ -19,10 +20,12 @@ namespace Management
 
         virtual public int BuildPrice { get; }
 
-        virtual protected int[] _proc_price { get; }
-        public int ProcPrice => _proc_price[CurrentMat];
+        virtual protected int[] _process_price { get; }
+        public int ProcPrice => _process_price[CurrentMat];
 
         static public List<Fabric> Fabrics = new List<Fabric>();
+
+        virtual public int TaxPrice { get; }
 
         public Fabric(Director owner, int build_time)
         {

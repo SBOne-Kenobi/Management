@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SwitchCanvas : MonoBehaviour
 {
@@ -14,13 +15,17 @@ public class SwitchCanvas : MonoBehaviour
             CurrentCanvas.SetActive(false);
             CurrentCanvas = null;
         }
-        CommonCanvas.SetActive(true);
+        CommonCanvas.GetComponent<Canvas>().enabled = true;
+        CommonCanvas.GetComponent<GraphicRaycaster>().enabled = true;
+        //CommonCanvas.SetActive(true);
     }
 
     public void GoCanvas(GameObject canvas)
     {
         CurrentCanvas = canvas;
-        CommonCanvas.SetActive(false);
+        //CommonCanvas.SetActive(false);
+        CommonCanvas.GetComponent<Canvas>().enabled = false;
+        CommonCanvas.GetComponent<GraphicRaycaster>().enabled = false;
         CurrentCanvas.GetComponent<PlayerCanvas>().Activate();
     }
 }

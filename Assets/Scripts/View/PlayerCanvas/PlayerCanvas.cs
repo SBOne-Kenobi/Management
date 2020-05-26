@@ -1,26 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon.Pun;
 
 public enum ProductionMode
 {
-    PROD = 0,
+    PRODUCTION = 0,
     BUY = 1,
     UPGRADE = 2,
 }
 
 public class PlayerCanvas : MonoBehaviour
 {
-    public Player player;
-    private Switcher switcher;
-    public bool IsOwner => switcher.GetPlayer() == player;
-    public ProductionMode Mode { get; private set; } = ProductionMode.PROD;
+    public PlayerControl player;
+    public bool IsOwner {
+        get
+        {
+            if (player != null && player.PhotonView != null)
+                return player.PhotonView.IsMine;
+            return false;
+        }
+    }
+    public ProductionMode Mode { get; private set; } = ProductionMode.PRODUCTION;
     public List<ProdElement> prods = new List<ProdElement>();
     public Controller Controller { get; private set; }
 
     private void Awake()
     {
-        switcher = FindObjectOfType<Switcher>();
         ProdMode();
         Controller = FindObjectOfType<Controller>();
     }
@@ -44,7 +50,7 @@ public class PlayerCanvas : MonoBehaviour
 
     public void ProdMode()
     {  
-        Mode = ProductionMode.PROD;
+        Mode = ProductionMode.PRODUCTION;
     }
 
     public void BuyMode()
@@ -61,6 +67,5 @@ public class PlayerCanvas : MonoBehaviour
             ProdMode();
         else
             Mode = ProductionMode.UPGRADE;
-        
     }
 }
