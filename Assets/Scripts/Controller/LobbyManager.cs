@@ -37,8 +37,11 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     void Log(string s)
     {
         Debug.Log(s);
-        LogText.text += "\n";
-        LogText.text += s;
+        if (LogText != null)
+        {
+            LogText.text += "\n";
+            LogText.text += s;
+        }
     }
 
     public override void OnConnectedToMaster()
