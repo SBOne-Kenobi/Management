@@ -20,6 +20,16 @@ public class Controller : MonoBehaviour, IOnEventCallback
 
     public PlayerControl MinePlayer;
 
+    [SerializeField]
+    private GameObject ListIconsPrefab;
+
+    public ListIcons Icons { get; private set; }
+
+    void Awake()
+    {
+        Icons = Instantiate(ListIconsPrefab).GetComponent<ListIcons>();
+    }
+
     public void AddPlayer(PlayerControl player)
     {
         if (Players.Contains(player))
