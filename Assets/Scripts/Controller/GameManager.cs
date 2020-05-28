@@ -36,8 +36,13 @@ public class GameManager : MonoBehaviourPunCallbacks, IOnEventCallback
     private void Start()
     {
         //создать нового игрока
-        PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0,0,0), Quaternion.identity);
+        var player = PhotonNetwork.Instantiate(PlayerPrefab.name, new Vector3(0,0,0), Quaternion.identity);
+        player.GetComponent<PlayerControl>().controller = GetComponent<Controller>();
+        var icon = PlayerPrefs.GetInt("Icon", 0);
+        player.GetComponent<PlayerControl>().SetIcon(icon);
         var item = PhotonNetwork.Instantiate(PlayerItemPrefab.name, new Vector3(0,0,0), Quaternion.identity);
+        item.GetComponent<PlayerItem>().Controller = GetComponent<Controller>();
+        item.GetComponent<PlayerItem>().SetIcon(icon);
         ReadyButton.onClick.AddListener(item.GetComponent<PlayerItem>().GetReady);
         StartButton.onClick.AddListener(StartGame);
     }

@@ -27,7 +27,7 @@ public class Panel : MonoBehaviour
 
     private void Update()
     {
-        State.GetComponent<Text>().text = "Current state: " + controller.game.ToString();
+        State.GetComponent<Text>().text = "State: " + controller.game.ToString();
         Mat.GetComponent<Text>().text = "M: " + (Math.Floor(controller.game.State.Bank.GetInfo.UMat * controller.game.Alive)).ToString();
         Prod.GetComponent<Text>().text = "P: " + (Math.Floor(controller.game.State.Bank.GetInfo.UProd * controller.game.Alive)).ToString();
         MinMat.GetComponent<Text>().text = "≥$: " + controller.game.State.Bank.GetInfo.MinPrice.ToString();

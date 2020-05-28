@@ -13,7 +13,22 @@ public class PlayerControl : MonoBehaviour, IPunObservable
     public bool IsReady { get; private set; } = true;
     public bool Mutable { get; set; } = false;
     public string Name = "Default";
-    private Controller controller;
+    public Controller controller;
+    public int IconNum { get; private set; } = -1;
+
+    public void SetIcon(int id)
+    {
+        if (IconNum == id || controller == null)
+            return;
+
+        IconNum = id;
+        var texture = controller.Icons.Images[id];
+        GetComponent<Image>().sprite = Sprite.Create(
+            texture,
+            new Rect(0, 0, texture.width, texture.height),
+            new Vector2(0.5f, 0.5f));
+        
+    }
 
     public void Start()
     {
@@ -22,8 +37,12 @@ public class PlayerControl : MonoBehaviour, IPunObservable
 
         PhotonView = GetComponent<PhotonView>();
         Name = PhotonView.Owner.NickName;
+        var color = new Color();
         if (!PhotonView.IsMine)
-            GetComponent<Image>().color = Color.red;
+            color = new Color(0.990566f, 0.4835739f, 0.03270739f);
+        else
+            color = new Color(0.3553638f, 1f, 0f);
+        transform.Find("PlayerName").GetComponent<Text>().color = color;
 
         controller = FindObjectOfType<Controller>();
         controller.AddPlayer(this);
@@ -50,6 +69,7 @@ public class PlayerControl : MonoBehaviour, IPunObservable
     {
         //sync IsReady, Mutable
         //+ Money, product, materials
+        //+ Icon
         if (stream.IsWriting)
         {
             stream.SendNext(IsReady);
@@ -57,6 +77,7 @@ public class PlayerControl : MonoBehaviour, IPunObservable
             stream.SendNext(Director.Money);
             stream.SendNext(Director.Product);
             stream.SendNext(Director.Materials);
+            stream.SendNext(IconNum);
         }
         else
         {
@@ -65,6 +86,7 @@ public class PlayerControl : MonoBehaviour, IPunObservable
             Director.Money = (int) stream.ReceiveNext();
             Director.Product = (int) stream.ReceiveNext();
             Director.Materials = (int) stream.ReceiveNext();
+            SetIcon((int)stream.ReceiveNext());
         }
     }
 }
