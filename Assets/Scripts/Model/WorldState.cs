@@ -21,7 +21,8 @@ namespace Management
         MatRequest = 2,
         Production = 3,
         ProdRequest = 4,
-        NumberOfGameStates = 5
+        BuildUpgrade = 5,
+        NumberOfGameStates = 6
     };
 
     public class WorldState
@@ -63,6 +64,8 @@ namespace Management
                 return "Product requests";
             else if (CurrentState == GameState.Start)
                 return "Start game";
+            else if (CurrentState == GameState.BuildUpgrade)
+                return "Build/Upgrade";
             return "Unknown GameState";
         }
 
@@ -128,6 +131,10 @@ namespace Management
                 foreach (Offer offer in RequestsOfProd)
                     GetDirector(offer.Priority).MakeRequestOfProd(offer.Price, offer.UProd);
                 RequestsOfProd.Clear();
+            } else if (CurrentState == GameState.BuildUpgrade)
+            {
+                foreach (Director director in Directors)
+                    director.UpdateFabCosts();
             }
 
             CurrentState = GetNextState;
@@ -150,12 +157,6 @@ namespace Management
                         currentMain = null;
                 }
                 CurrentMainDirector = (CurrentMainDirector + 1) % Directors.Count;
-
-                foreach (Fabric fabric in Fabrics.ToList())
-                    fabric.NextState(this);
-
-                foreach (Director director in Directors)
-                    director.UpdateFabCosts();
             }
             else if (CurrentState == GameState.UpdateMarket)
             {
@@ -172,6 +173,11 @@ namespace Management
             else if (CurrentState == GameState.ProdRequest)
             {
                 //wait for requests
+            }
+            else if (CurrentState == GameState.BuildUpgrade)
+            {
+                foreach (Fabric fabric in Fabrics.ToList())
+                    fabric.NextState(this);
             }
 
             return CurrentState;
